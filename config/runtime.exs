@@ -20,7 +20,7 @@ import Config
 config :mockup_bank, MockupBankWeb.Endpoint, server: true
 # end
 
-if config_env() == :prod do
+# if config_env() == :prod do
   database_url = "ecto://postgres:Qwerty12@srv-captain--postgres/mockupserver"
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
@@ -104,4 +104,4 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
-end
+# end
