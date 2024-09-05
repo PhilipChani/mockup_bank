@@ -83,6 +83,9 @@ RUN chown nobody /app
 
 # set runner ENV
 ENV MIX_ENV="prod"
+ENV DATABASE_URL="ecto://postgres:Qwerty12@srv-captain--postgres/mockupserver"
+ENV SECRET_KEY_BASE="2lfGLtwPwlXo4koQZTSPtoaovMmNT1g4uXDF+OYedtu+h4X3p+3zjNHQz3/gxpFu"
+ENV PHX_SERVER="TRUE"
 
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/mockup_bank ./
