@@ -19,6 +19,7 @@ config :mockup_bank, MockupBankWeb.Endpoint,
     formats: [html: MockupBankWeb.ErrorHTML, json: MockupBankWeb.ErrorJSON],
     layout: false
   ],
+  check_origin: ["https://fdh-mockup-bank.abakula.com"],
   pubsub_server: MockupBank.PubSub,
   live_view: [signing_salt: "5aVjcryc"]
 
