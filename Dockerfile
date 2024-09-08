@@ -23,6 +23,7 @@ WORKDIR /app
 # Compile the project
 RUN mix deps.get
 RUN mix do compile
+RUN mix assets.deploy
 
 
 ENV SECRET_KEY_BASE="$(mix phx.gen.secret)"
