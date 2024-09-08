@@ -38,7 +38,7 @@ config :mockup_bank, MockupBankWeb.Endpoint, server: true
   # variable instead.
   secret_key_base = "2lfGLtwPwlXo4koQZTSPtoaovMmNT1g4uXDF+OYedtu+h4X3p+3zjNHQz3/gxpFu"
 
-  host = System.get_env("PHX_HOST") || "example.com"
+  host = System.get_env("PHX_HOST") || "https://fdh-mockup-bank.abakula.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :mockup_bank, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
