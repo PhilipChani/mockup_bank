@@ -29,6 +29,7 @@ ENV SECRET_KEY_BASE="$(mix phx.gen.secret)"
 ENV DATABASE_URL=ecto://postgres:Qwerty12@srv-captain--postgres/mockupserver
 ENV PHX_SERVER=true
 ENV MIX_ENV=prod
+RUN mix phx.digest
 RUN mix release --overwrite
 # Expose port 4000 for the app
 EXPOSE 4000
