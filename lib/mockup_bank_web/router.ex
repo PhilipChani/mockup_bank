@@ -27,7 +27,7 @@ defmodule MockupBankWeb.Router do
     post "/accounts/credit", BankController, :credit_account
     post "/accounts/debit", BankController, :debit_account
     post "/accounts/transfer", BankController, :transfer_funds
-    post "/accounts", BankController, :lookup_accounts
+    post "/accounts/lookup", BankController, :lookup_accounts
     post "/accounts/transactions", BankController, :get_transactions
   end
 
