@@ -9,7 +9,9 @@ config :mockup_bank, MockupBank.Repo,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
-  port: 5433
+  port: 5433,
+  queue_target: 30000,
+  queue_interval: 30000
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
