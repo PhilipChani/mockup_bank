@@ -20,6 +20,17 @@ defmodule MockupBankWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/api", MockupBankWeb do
+    pipe_through :api
+
+    post "/accounts", BankController, :create_account
+    post "/accounts/credit", BankController, :credit_account
+    post "/accounts/debit", BankController, :debit_account
+    post "/accounts/transfer", BankController, :transfer_funds
+    get "/accounts", BankController, :lookup_accounts
+    post "/accounts/transactions", BankController, :get_transactions
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", MockupBankWeb do
   #   pipe_through :api
