@@ -65,4 +65,13 @@ defmodule MockupBankWeb.BankJSON do
       end)
     }
   end
+
+  def balance(%{account: account}) do
+    %{
+      account_number: account.account_number,
+      balance: account.balance,
+      currency: account.currency,
+      last_transaction_date: account.last_transaction_date
+    }
+  end
 end
