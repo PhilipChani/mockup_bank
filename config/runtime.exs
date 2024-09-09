@@ -16,11 +16,11 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
-# if System.get_env("PHX_SERVER") do
-config :mockup_bank, MockupBankWeb.Endpoint, server: true
-# end
+if System.get_env("PHX_SERVER") do
+  config :mockup_bank, MockupBankWeb.Endpoint, server: true
+end
 
-# if config_env() == :prod do
+if config_env() == :prod do
   database_url = "ecto://postgres:Qwerty12@srv-captain--postgres/mockupserver"
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
@@ -104,4 +104,4 @@ config :mockup_bank, MockupBankWeb.Endpoint, server: true
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
-# end
+end
