@@ -80,6 +80,10 @@ defmodule MockupBank.Service.TransactionService do
     end
   end
 
+  def get_by_account_number(account_number) do
+    get_account_by_number(account_number)
+  end
+
   # Private functions
 
   defp find_or_create_account_user(email, name) do
