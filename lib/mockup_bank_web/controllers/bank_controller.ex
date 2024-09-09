@@ -56,4 +56,17 @@ defmodule MockupBankWeb.BankController do
     transactions = AccountTransactionService.get_account_transactions(account_number)
     render(conn, "transactions.json", transactions: transactions)
   end
+
+  def get_balance(conn, %{"account_number" => account_number}) do
+    case AccountTransactionService.get_by_account_number(account_number) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> json(%{error: "Account not found"})
+      account ->
+        conn
+        |> put_status(:ok)
+        |> render("balance.json", account: account)
+    end
+  end
 end
