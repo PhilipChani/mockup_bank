@@ -17,7 +17,12 @@ defmodule MockupBankWeb.Router do
   scope "/", MockupBankWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", HomeLive.Index, :index
+    live "/mesages", TxnLive.Index, :index
+    live "/mesages/credit", TxnLive.Index, :credit
+    live "/mesages/debit", TxnLive.Index, :debit
+    live "/mesages/bi", TxnLive.Index, :bi
+    # get "/", PageController, :home
   end
 
   scope "/api", MockupBankWeb do

@@ -1,0 +1,29 @@
+<.modal :if={@live_action in [:credit]} id="credit-modal" show on_cancel={JS.patch(~p"/")}>
+  <.live_component
+    module={MockupBankWeb.Components.Credit}
+    id={:credit}
+    title={@page_title}
+    action={@live_action}
+    patch={~p"/mesages/credit"}
+  />
+</.modal>
+
+<.modal :if={@live_action in [:debit]} id="debit-modal" show on_cancel={JS.patch(~p"/")}>
+  <.live_component
+    module={MockupBankWeb.Components.Debit}
+    id={:credit}
+    title={@page_title}
+    action={@live_action}
+    patch={~p"/mesages/debit"}
+  />
+</.modal>
+
+<.modal :if={@live_action in [:bi]} id="bi-modal" show on_cancel={JS.patch(~p"/")}>
+  <.live_component
+    module={MockupBankWeb.Components.Bi}
+    id={:credit}
+    title={@page_title}
+    action={@live_action}
+    patch={~p"/mesages/bi"}
+  />
+</.modal>
