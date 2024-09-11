@@ -22,6 +22,9 @@ defmodule MockupBankWeb.Router do
     live "/mesages/credit", TxnLive.Index, :credit
     live "/mesages/debit", TxnLive.Index, :debit
     live "/mesages/bi", TxnLive.Index, :bi
+    live "/mesages/at", TxnLive.Index, :at
+    live "/mesages/post_txn", TxnLive.Index, :post_txn
+    live "/mesages/la", TxnLive.Index, :la
     # get "/", PageController, :home
   end
 

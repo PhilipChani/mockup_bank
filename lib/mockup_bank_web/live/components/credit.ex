@@ -9,7 +9,7 @@ defmodule MockupBankWeb.Components.Credit do
         <div>
           <.header>
             <%= @title %>
-            <:subtitle>Use this form to manage service records in your database.</:subtitle>
+            <:subtitle></:subtitle>
           </.header>
 
           <.simple_form
@@ -65,7 +65,6 @@ defmodule MockupBankWeb.Components.Credit do
     
     def send_data_to_api(request) do
 
-      IO.inspect(request, label: "====================")
       message = Jason.encode!(request)
       response =
         url(~p"/api/accounts/credit")
@@ -74,7 +73,7 @@ defmodule MockupBankWeb.Components.Credit do
           {:ok, %HTTPoison.Response{body: body}} ->
             body
           {:error, error} ->
-            inspect(error)
+            Jason.encode!(%{response: inspect(error)})
         end
 
 

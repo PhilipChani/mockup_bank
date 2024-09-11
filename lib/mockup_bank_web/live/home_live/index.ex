@@ -25,10 +25,10 @@ defmodule MockupBankWeb.HomeLive.Index do
       [
         %{name: "Credit Account", url: "/mesages/credit"},
         %{name: "Debit Account", url: "/mesages/debit"},
-        %{name: "Transfer", url: ""},
+        %{name: "Account Transaction", url: "/mesages/at"},
         %{name: "Account Balance", url: "/mesages/bi"},
-        %{name: "Post Accounts", url: ""},
-        %{name: "Lookup Accounts", url: ""},
+        %{name: "Post Accounts", url: "/mesages/post_txn"},
+        %{name: "Lookup Accounts", url: "/mesages/la"},
 
       ]
     end

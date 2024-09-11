@@ -24,17 +24,32 @@ defmodule MockupBankWeb.TxnLive.Index do
     
     defp apply_action(socket, :credit, _params) do
       socket
-      |> assign(:page_title, "Credit Message")
+      |> assign(:page_title, "DEPOSIT")
     end
+
+    defp apply_action(socket, :at, _params) do
+      socket
+      |> assign(:page_title, "TRANSACTION REPORT")
+    end
+
+    defp apply_action(socket, :post_txn, _params) do
+      socket
+      |> assign(:page_title, "NEW ACCOUNT")
+    end
+
+    defp apply_action(socket, :la, _params) do
+      socket
+      |> assign(:page_title, "ACCOUNTS")
+    end    
 
     defp apply_action(socket, :debit, _params) do
       socket
-      |> assign(:page_title, "Debit Message")
+      |> assign(:page_title, "WITHDRAW")
     end
 
     defp apply_action(socket, :bi, _params) do
       socket
-      |> assign(:page_title, "Balance Inquiry Message")
+      |> assign(:page_title, "BALANCE")
     end
 
     def services() do

@@ -27,3 +27,33 @@
     patch={~p"/mesages/bi"}
   />
 </.modal>
+
+<.modal :if={@live_action in [:la]} id="bi-modal" show on_cancel={JS.patch(~p"/")}>
+  <.live_component
+    module={MockupBankWeb.Components.LookupAccount}
+    id={:credit}
+    title={@page_title}
+    action={@live_action}
+    patch={~p"/mesages/la"}
+  />
+</.modal>
+
+<.modal :if={@live_action in [:post_txn]} id="bi-modal" show on_cancel={JS.patch(~p"/")}>
+  <.live_component
+    module={MockupBankWeb.Components.PostTxn}
+    id={:credit}
+    title={@page_title}
+    action={@live_action}
+    patch={~p"/mesages/la"}
+  />
+</.modal>
+
+<.modal :if={@live_action in [:at]} id="bi-modal" show on_cancel={JS.patch(~p"/")}>
+  <.live_component
+    module={MockupBankWeb.Components.At}
+    id={:credit}
+    title={@page_title}
+    action={@live_action}
+    patch={~p"/mesages/at"}
+  />
+</.modal>

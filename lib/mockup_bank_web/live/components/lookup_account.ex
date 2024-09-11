@@ -1,98 +1,91 @@
 defmodule MockupBankWeb.Components.LookupAccount do
-    use MockupBankWeb, :live_component
-  
-    alias MockupBankWeb.Locations
-  
-    @impl true
-    def render(assigns) do
-      ~H"""
+  use MockupBankWeb, :live_component
+  alias MockupBank.EmbeededSchema.La, as: Credit
+
+
+  @impl true
+  def render(assigns) do
+    ~H"""
       <div>
         <.header>
           <%= @title %>
-          <:subtitle>Use this form to manage location records in your database.</:subtitle>
+          <:subtitle></:subtitle>
         </.header>
-  
+
         <.simple_form
           for={@form}
-          id="location-form"
+          id="service-form"
           phx-target={@myself}
-          phx-change="validate"
           phx-submit="save"
         >
-          <.input field={@form[:address]} type="text" label="Address" />
-          <.input field={@form[:city]} type="text" label="City" />
-          <.input field={@form[:state]} type="text" label="State" />
-          <.input field={@form[:country]} type="text" label="Country" />
-          <.input field={@form[:postal_code]} type="text" label="Postal code" />
-          <.input field={@form[:latitude]} type="number" label="Latitude" step="any" />
-          <.input field={@form[:longitude]} type="number" label="Longitude" step="any" />
-          <.input field={@form[:is_active]} type="checkbox" label="Is active" />
+          <.input field={@form[:email]} type="text" label="Email" />
+
           <:actions>
-            <.button phx-disable-with="Saving...">Save Location</.button>
+            <.button phx-disable-with="Processing...">EXECUTE</.button>
           </:actions>
         </.simple_form>
+        <div class="mt-6" >
+          <span>Response</span>
+            <div id="json-viewer" phx-hook="JsonViewerHook" data-json={@json_data} style="width: 100%; height: 100%;"></div>
+        </div>
+        
       </div>
-      """
-    end
-  
-    @impl true
-    def update(%{location: location} = assigns, socket) do
-      changeset = Locations.change_location(location)
-  
-      {:ok,
-       socket
-       |> assign(assigns)
-       |> assign_form(changeset)}
-    end
-  
-    @impl true
-    def handle_event("validate", %{"location" => location_params}, socket) do
-      changeset =
-        socket.assigns.location
-        |> Locations.change_location(location_params)
-        |> Map.put(:action, :validate)
-  
-      {:noreply, assign_form(socket, changeset)}
-    end
-  
-    def handle_event("save", %{"location" => location_params}, socket) do
-      save_location(socket, socket.assigns.action, location_params)
-    end
-  
-    defp save_location(socket, :edit, location_params) do
-      case Locations.update_location(socket.assigns.location, location_params) do
-        {:ok, location} ->
-          notify_parent({:saved, location})
-  
-          {:noreply,
-           socket
-           |> put_flash(:info, "Location updated successfully")
-           |> push_patch(to: socket.assigns.patch)}
-  
-        {:error, %Ecto.Changeset{} = changeset} ->
-          {:noreply, assign_form(socket, changeset)}
-      end
-    end
-  
-    defp save_location(socket, :new, location_params) do
-      case Locations.create_location(location_params) do
-        {:ok, location} ->
-          notify_parent({:saved, location})
-  
-          {:noreply,
-           socket
-           |> put_flash(:info, "Location created successfully")
-           |> push_patch(to: socket.assigns.patch)}
-  
-        {:error, %Ecto.Changeset{} = changeset} ->
-          {:noreply, assign_form(socket, changeset)}
-      end
-    end
-  
-    defp assign_form(socket, %Ecto.Changeset{} = changeset) do
-      assign(socket, :form, to_form(changeset))
-    end
-  
-    defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
+    """
   end
-  
+
+  @impl true
+  def update(assigns, socket) do
+    struct = %{}
+    changeset = Credit.change(struct)
+    json_data = "{}"
+
+    {:ok,
+      socket
+      |> assign(:json_data, json_data)
+      |> assign(:struct, struct)
+      |> assign(assigns)
+      |> assign_form(changeset)}
+  end
+
+  @impl true
+  def handle_event("save", %{"la" => params}, socket) do
+    process_message(socket, params)
+  end
+
+  defp process_message(socket, data) do
+    response = send_data_to_api(data)
+    changeset = Credit.change(response)
+
+    {:noreply,
+        socket
+        |> assign(:json_data, response["response"])
+        |> put_flash(:info, "Executed successfully")
+        |> assign_form(changeset)}
+  end
+
+ 
+  def send_data_to_api(request) do
+    message = Jason.encode!(request)
+    response =
+        try do
+          url(~p"/api/accounts/lookup")
+          |> HTTPoison.post(message, ["Content-Type": "application/json"]) 
+          |> case do
+          {:ok, %HTTPoison.Response{body: body}} ->
+              body
+          {:error, error} ->
+              Jason.encode!(%{response: inspect(error)})
+          end       
+        rescue
+              error ->
+                  Jason.encode!(%{response: inspect(error)})
+        end
+
+    request
+    |> Map.put("response", response)
+  end
+  defp assign_form(socket, %Ecto.Changeset{} = changeset) do
+    assign(socket, :form, to_form(changeset))
+  end
+
+end

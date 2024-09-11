@@ -9,7 +9,7 @@ defmodule MockupBankWeb.Components.Debit do
         <div>
           <.header>
             <%= @title %>
-            <:subtitle>Use this form to manage service records in your database.</:subtitle>
+            <:subtitle></:subtitle>
           </.header>
 
           <.simple_form
@@ -76,7 +76,7 @@ defmodule MockupBankWeb.Components.Debit do
           {:ok, %HTTPoison.Response{body: body}} ->
             body
           {:error, error} ->
-            inspect(error)
+            Jason.encode!(%{response: inspect(error)})
         end
 
 

@@ -1,6 +1,6 @@
-defmodule MockupBankWeb.Components.Bi do
+defmodule MockupBankWeb.Components.PostTxn do
     use MockupBankWeb, :live_component
-    alias MockupBank.EmbeededSchema.Bi, as: Credit
+    alias MockupBank.EmbeededSchema.La, as: Credit
   
   
     @impl true
@@ -11,15 +11,19 @@ defmodule MockupBankWeb.Components.Bi do
             <%= @title %>
             <:subtitle></:subtitle>
           </.header>
-
+  
           <.simple_form
             for={@form}
             id="service-form"
             phx-target={@myself}
             phx-submit="save"
           >
-            <.input field={@form[:account_number]} type="text" label="Account Number" />
-
+            <.input field={@form[:email]} type="text" label="Email" />
+            <.input field={@form[:name]} type="text" label="Name" />
+            <.input field={@form[:currency]} type="text" label="Currency" />
+            <.input field={@form[:account_type]} type="text" label="Account Type" />
+            <.input field={@form[:initial_balance]} type="number" label="Initial Balance" />
+  
             <:actions>
               <.button phx-disable-with="Processing...">EXECUTE</.button>
             </:actions>
@@ -38,7 +42,7 @@ defmodule MockupBankWeb.Components.Bi do
       struct = %{}
       changeset = Credit.change(struct)
       json_data = "{}"
-
+  
       {:ok,
         socket
         |> assign(:json_data, json_data)
@@ -48,14 +52,14 @@ defmodule MockupBankWeb.Components.Bi do
     end
   
     @impl true
-    def handle_event("save", %{"bi" => params}, socket) do
+    def handle_event("save", %{"la" => params}, socket) do
       process_message(socket, params)
     end
   
     defp process_message(socket, data) do
       response = send_data_to_api(data)
       changeset = Credit.change(response)
-
+  
       {:noreply,
           socket
           |> assign(:json_data, response["response"])
@@ -65,24 +69,27 @@ defmodule MockupBankWeb.Components.Bi do
   
     
     def send_data_to_api(request) do
-
+  
       IO.inspect(request, label: "====================")
       message = Jason.encode!(request)
       response =
-        url(~p"/api/accounts/balance")
-        |> HTTPoison.post(message, ["Content-Type": "application/json"]) 
-        |> case do
-          {:ok, %HTTPoison.Response{body: body}} ->
-            body
-          {:error, error} ->
-            Jason.encode!(%{response: inspect(error)})
-        end
-
-
+        try do
+            url(~p"/api/accounts")
+            |> HTTPoison.post(message, ["Content-Type": "application/json"]) 
+            |> case do
+            {:ok, %HTTPoison.Response{body: body}} ->
+                body
+            {:error, error} ->
+                Jason.encode!(%{response: inspect(error)})
+            end        rescue
+                error ->
+                    Jason.encode!(%{response: inspect(error)})
+            end
+  
       request
       |> Map.put("response", response)
     end
-
+  
     defp assign_form(socket, %Ecto.Changeset{} = changeset) do
       assign(socket, :form, to_form(changeset))
     end
