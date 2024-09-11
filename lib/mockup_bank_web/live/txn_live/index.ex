@@ -29,12 +29,12 @@ defmodule MockupBankWeb.TxnLive.Index do
 
     defp apply_action(socket, :at, _params) do
       socket
-      |> assign(:page_title, "TRANSACTION REPORT")
+      |> assign(:page_title, "REPORT")
     end
 
     defp apply_action(socket, :post_txn, _params) do
       socket
-      |> assign(:page_title, "NEW ACCOUNT")
+      |> assign(:page_title, "REGISTER")
     end
 
     defp apply_action(socket, :la, _params) do

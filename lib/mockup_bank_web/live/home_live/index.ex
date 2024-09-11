@@ -23,12 +23,12 @@ defmodule MockupBankWeb.HomeLive.Index do
 
     def services() do
       [
-        %{name: "Credit Account", url: "/mesages/credit"},
-        %{name: "Debit Account", url: "/mesages/debit"},
-        %{name: "Account Transaction", url: "/mesages/at"},
-        %{name: "Account Balance", url: "/mesages/bi"},
-        %{name: "Post Accounts", url: "/mesages/post_txn"},
-        %{name: "Lookup Accounts", url: "/mesages/la"},
+        %{name: "DEPOSIT", url: "/mesages/credit"},
+        %{name: "WITHDRAW", url: "/mesages/debit"},
+        %{name: "REPORT", url: "/mesages/at"},
+        %{name: "BALANCE", url: "/mesages/bi"},
+        %{name: "REGISTER", url: "/mesages/post_txn"},
+        %{name: "ACCOUNTS", url: "/mesages/la"},
 
       ]
     end
