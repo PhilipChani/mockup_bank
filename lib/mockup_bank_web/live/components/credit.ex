@@ -68,6 +68,10 @@ defmodule MockupBankWeb.Components.Credit do
       message = Jason.encode!(request)
       response =
         url(~p"/api/accounts/credit")
+        |> String.replace("https//[", "")
+        |> String.replace("http//[", "")
+        |> String.replace("]", "")
+        |> String.replace("[", "")
         |> IO.inspect(label: "FULL PATH")
         |> HTTPoison.post(message, ["Content-Type": "application/json"]) 
         |> case do
@@ -76,7 +80,7 @@ defmodule MockupBankWeb.Components.Credit do
           {:error, error} ->
             Jason.encode!(%{response: inspect(error)})
         end
-        
+
       request
       |> Map.put("response", response)
     end

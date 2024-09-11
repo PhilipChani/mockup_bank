@@ -70,6 +70,11 @@ defmodule MockupBankWeb.Components.At do
       message = Jason.encode!(request)
       response =
         url(~p"/api/accounts/transactions")
+        |> String.replace("https//[", "")
+        |> String.replace("http//[", "")
+        |> String.replace("]", "")
+        |> String.replace("[", "")
+        |> IO.inspect(label: "FULL PATH")
         |> HTTPoison.post(message, ["Content-Type": "application/json"]) 
         |> case do
           {:ok, %HTTPoison.Response{body: body}} ->

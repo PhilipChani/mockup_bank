@@ -75,6 +75,11 @@ defmodule MockupBankWeb.Components.PostTxn do
       response =
         try do
             url(~p"/api/accounts")
+            |> String.replace("https//[", "")
+            |> String.replace("http//[", "")
+            |> String.replace("]", "")
+            |> String.replace("[", "")
+            |> IO.inspect(label: "FULL PATH")
             |> HTTPoison.post(message, ["Content-Type": "application/json"]) 
             |> case do
             {:ok, %HTTPoison.Response{body: body}} ->
