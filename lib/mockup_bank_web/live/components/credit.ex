@@ -76,7 +76,7 @@ defmodule MockupBankWeb.Components.Credit do
           {:error, error} ->
             Jason.encode!(%{response: inspect(error)})
         end
-
+        
       request
       |> Map.put("response", response)
     end
