@@ -20,12 +20,16 @@ defmodule MockupBankWeb.Components.Debit do
           >
             <.input field={@form[:account_number]} type="text" label="Account Number" />
             <.input field={@form[:amount]} type="text" label="Amount" />
-            <.input field={@form[:response]} type="textarea" readonly="readonly" label="Response" />
 
             <:actions>
-              <.button phx-disable-with="Saving...">EXECUTE</.button>
+              <.button phx-disable-with="Processing...">EXECUTE</.button>
             </:actions>
           </.simple_form>
+
+          <div class="mt-6" >
+            <span>Response</span>
+              <div id="json-viewer" phx-hook="JsonViewerHook" data-json={@json_data} style="width: 100%; height: 100%;"></div>
+          </div>
         </div>
       """
     end
@@ -34,8 +38,11 @@ defmodule MockupBankWeb.Components.Debit do
     def update(assigns, socket) do
       struct = %{}
       changeset = Credit.change(struct)
+      json_data = "{}"
+
       {:ok,
         socket
+        |> assign(:json_data, json_data)
         |> assign(:struct, struct)
         |> assign(assigns)
         |> assign_form(changeset)}
@@ -52,6 +59,7 @@ defmodule MockupBankWeb.Components.Debit do
 
       {:noreply,
           socket
+          |> assign(:json_data, response["response"])
           |> put_flash(:info, "Executed successfully")
           |> assign_form(changeset)}
     end
