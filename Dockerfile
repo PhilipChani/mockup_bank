@@ -21,6 +21,17 @@ WORKDIR /app
 
 
 # Compile the project
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get install -y nodejs
+
+# Install dependencies in assets directory
+WORKDIR /app/assets
+RUN npm install
+
+# Return to app directory
+WORKDIR /app
+
 RUN mix deps.get
 RUN mix do compile
 RUN mix phx.digest
