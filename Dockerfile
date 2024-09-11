@@ -22,8 +22,7 @@ WORKDIR /app
 
 # Compile the project
 # Install Node.js and npm
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get install -y nodejs
+RUN apt install npm -y
 
 # Install dependencies in assets directory
 WORKDIR /app/assets
