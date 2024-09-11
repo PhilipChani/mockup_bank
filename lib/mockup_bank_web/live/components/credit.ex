@@ -68,8 +68,8 @@ defmodule MockupBankWeb.Components.Credit do
       message = Jason.encode!(request)
       response =
         url(~p"/api/accounts/credit")
-        |> String.replace("https//[", "")
-        |> String.replace("http//[", "")
+        |> String.replace("https://[", "")
+        |> String.replace("http://[", "")
         |> String.replace("]", "")
         |> String.replace("[", "")
         |> IO.inspect(label: "FULL PATH")

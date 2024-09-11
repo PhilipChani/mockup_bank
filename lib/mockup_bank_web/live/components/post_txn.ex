@@ -75,8 +75,8 @@ defmodule MockupBankWeb.Components.PostTxn do
       response =
         try do
             url(~p"/api/accounts")
-            |> String.replace("https//[", "")
-            |> String.replace("http//[", "")
+            |> String.replace("https://[", "")
+            |> String.replace("http://[", "")
             |> String.replace("]", "")
             |> String.replace("[", "")
             |> IO.inspect(label: "FULL PATH")

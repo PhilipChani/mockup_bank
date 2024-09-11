@@ -71,8 +71,8 @@ defmodule MockupBankWeb.Components.Debit do
       message = Jason.encode!(request)
       response =
         url(~p"/api/accounts/debit")
-        |> String.replace("https//[", "")
-        |> String.replace("http//[", "")
+        |> String.replace("https://[", "")
+        |> String.replace("http://[", "")
         |> String.replace("]", "")
         |> String.replace("[", "")
         |> IO.inspect(label: "FULL PATH")

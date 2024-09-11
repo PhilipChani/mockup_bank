@@ -70,8 +70,8 @@ defmodule MockupBankWeb.Components.At do
       message = Jason.encode!(request)
       response =
         url(~p"/api/accounts/transactions")
-        |> String.replace("https//[", "")
-        |> String.replace("http//[", "")
+        |> String.replace("https://[", "")
+        |> String.replace("http://[", "")
         |> String.replace("]", "")
         |> String.replace("[", "")
         |> IO.inspect(label: "FULL PATH")
