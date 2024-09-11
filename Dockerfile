@@ -21,6 +21,20 @@ WORKDIR /app
 
 
 # Compile the project
+# Install Node.js and npm
+# RUN apt install npm -y
+
+# Install Node.js and npm
+RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt/lists/*
+
+
+# # Install dependencies in assets directory
+WORKDIR /app/assets
+RUN npm install
+
+# Return to app directory
+WORKDIR /app
+
 RUN mix deps.get
 RUN mix do compile
 RUN mix phx.digest
