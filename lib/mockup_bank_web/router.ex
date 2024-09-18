@@ -10,8 +10,27 @@ defmodule MockupBankWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :browser2 do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, html: {MockupBankWeb.Layouts, :other}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  scope "/Main", MockupBankWeb.MainLive do
+    pipe_through :browser2
+
+    live "/", Index, :index
+    live "/listAllTransactions", Transactions, :index
+    live "/AccountCreation", PostAcc, :index
+    live "/CashDeposit", Deposit, :index
+
   end
 
   scope "/", MockupBankWeb do

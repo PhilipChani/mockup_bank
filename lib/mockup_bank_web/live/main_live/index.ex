@@ -1,4 +1,4 @@
-defmodule MockupBankWeb.HomeLive.Index do
+defmodule MockupBankWeb.MainLive.Index do
     use MockupBankWeb, :live_view
   
   
@@ -29,7 +29,6 @@ defmodule MockupBankWeb.HomeLive.Index do
         %{name: "BALANCE", url: "/mesages/bi"},
         %{name: "REGISTER", url: "/mesages/post_txn"},
         %{name: "ACCOUNTS", url: "/mesages/la"},
-        %{name: "MORE", url: "/Main"},
 
       ]
     end
