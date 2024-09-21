@@ -1,4 +1,4 @@
-defmodule MockupBankWeb.MainLive.Trabsactions do
+defmodule MockupBankWeb.MainLive.Transactions do
   use MockupBankWeb, :live_view
 
 
@@ -33,7 +33,6 @@ defmodule MockupBankWeb.MainLive.Trabsactions do
   defp process_message(socket, data) do
     response =
     data
-    |> Map.put("name", "#{data["first_name"]} #{data["last_name"]}")
     |> send_data_to_api()
 
     {:noreply,

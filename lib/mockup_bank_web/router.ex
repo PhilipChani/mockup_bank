@@ -30,6 +30,10 @@ defmodule MockupBankWeb.Router do
     live "/listAllTransactions", Transactions, :index
     live "/AccountCreation", PostAcc, :index
     live "/CashDeposit", Deposit, :index
+    live "/cashWithdraw", Withdraw, :index
+    live "/balanceInqiry", BalanceInquiry, :index
+    live "/Transfer", Transfer, :index
+    live "/LookupAccount", LookupAccount, :index
 
   end
 
