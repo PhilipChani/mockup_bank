@@ -7,7 +7,7 @@ defmodule MockupBankWeb.ErrorJSON do
 
   # If you want to customize a particular status code,
   # you may add your own clauses, such as:
-  
+
   #
   def render("400.json", %{message: message}) do
     %{errors: %{detail: message}}

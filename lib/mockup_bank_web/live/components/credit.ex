@@ -1,8 +1,8 @@
 defmodule MockupBankWeb.Components.Credit do
     use MockupBankWeb, :live_component
     alias MockupBank.EmbeededSchema.Credit
-  
-  
+
+
     @impl true
     def render(assigns) do
       ~H"""
@@ -32,7 +32,7 @@ defmodule MockupBankWeb.Components.Credit do
         </div>
       """
     end
-  
+
     @impl true
     def update(assigns, socket) do
       struct = %{}
@@ -45,12 +45,12 @@ defmodule MockupBankWeb.Components.Credit do
         |> assign(assigns)
         |> assign_form(changeset)}
     end
-  
+
     @impl true
     def handle_event("save", %{"credit" => params}, socket) do
       process_message(socket, params)
     end
-  
+
     defp process_message(socket, data) do
       response = send_data_to_api(data)
       changeset = Credit.change(response)
@@ -61,8 +61,8 @@ defmodule MockupBankWeb.Components.Credit do
           |> put_flash(:info, "Executed successfully")
           |> assign_form(changeset)}
     end
-  
-    
+
+
     def send_data_to_api(request) do
 
       message = Jason.encode!(request)
@@ -73,7 +73,7 @@ defmodule MockupBankWeb.Components.Credit do
         |> String.replace("]", "")
         |> String.replace("[", "")
         |> IO.inspect(label: "FULL PATH")
-        |> HTTPoison.post(message, ["Content-Type": "application/json"]) 
+        |> HTTPoison.post(message, ["Content-Type": "application/json"])
         |> case do
           {:ok, %HTTPoison.Response{body: body}} ->
             body
@@ -88,6 +88,5 @@ defmodule MockupBankWeb.Components.Credit do
     defp assign_form(socket, %Ecto.Changeset{} = changeset) do
       assign(socket, :form, to_form(changeset))
     end
-  
+
   end
-  
