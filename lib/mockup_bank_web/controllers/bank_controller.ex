@@ -14,28 +14,28 @@ defmodule MockupBankWeb.BankController do
 
   def credit_account(conn, %{"account_number" => account_number, "amount" => amount} = params) do
     description = Map.get(params, "description", "Credit")
-    with {:ok, {account, transaction}} <- AccountTransactionService.credit_account(account_number, amount, description) do
+    with {updated_account , transaction} <- AccountTransactionService.credit_account(account_number, amount, description) do
       conn
       |> put_status(:ok)
-      |> render("account_with_transaction.json", account: account, transaction: transaction)
+      |> render("account_with_transaction.json", account: updated_account, transaction: transaction)
     end
   end
 
   def debit_account(conn, %{"account_number" => account_number, "amount" => amount} = params) do
     description = Map.get(params, "description", "Debit")
-    with {:ok, {account, transaction}} <- AccountTransactionService.debit_account(account_number, amount, description) do
+    with {updated_account, transaction} <- AccountTransactionService.debit_account(account_number, amount, description) do
       conn
       |> put_status(:ok)
-      |> render("account_with_transaction.json", account: account, transaction: transaction)
+      |> render("account_with_transaction.json", account: updated_account, transaction: transaction)
     end
   end
 
   def transfer_funds(conn, %{"from_account" => from_account, "to_account" => to_account, "amount" => amount} = params) do
     description = Map.get(params, "description", "Transfer")
-    with {:ok, {from, to, transaction}} <- AccountTransactionService.transfer_funds(from_account, to_account, amount, description) do
+    with {:ok, updated_from_account, updated_to_account, transaction} <- AccountTransactionService.transfer_funds(from_account, to_account, amount, description) do
       conn
       |> put_status(:ok)
-      |> render("transfer_with_transaction.json", from: from, to: to, transaction: transaction)
+      |> render("transfer_with_transaction.json", from: updated_from_account, to: updated_to_account, transaction: transaction)
     end
   end
 
@@ -69,4 +69,22 @@ defmodule MockupBankWeb.BankController do
         |> render("balance.json", account: account)
     end
   end
+
+
+  def get_account(conn, %{"account_number" => account_number}) do
+    case AccountTransactionService.get_by_account_number(account_number) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> json(%{error: "Account not found"})
+      account ->
+
+        IO.inspect account
+
+        conn
+        |> put_status(:ok)
+        |> render("by_account_number.json", account: account)
+    end
+  end
+
 end
