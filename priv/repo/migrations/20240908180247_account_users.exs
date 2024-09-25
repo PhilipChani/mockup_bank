@@ -26,26 +26,29 @@ defmodule MockupBank.Repo.Migrations.AccountUsers do
     end
 
     create unique_index(:user_accounts, [:account_number])
-    create index(:user_accounts, [:account_user_id])
+    create index(:user_accounts, [:account_users_id])
 
-     create table(:transactions) do
-       add :type, :string, null: false
-       add :amount, :decimal, null: false, precision: 10, scale: 2
-       add :description, :string
-       add :status, :string, null: false
-       add :from_account_id, references(:user_accounts, on_delete: :restrict)
-       add :to_account_id, references(:user_accounts, on_delete: :restrict)
+    create table(:transactions) do
+      add :type, :string, null: false
+      add :amount, :decimal, null: false, precision: 10, scale: 2
+      add :description, :string
+      add :status, :string, null: false
+      add :from_account_id, references(:user_accounts, on_delete: :restrict)
+      add :to_account_id, references(:user_accounts, on_delete: :restrict)
+      add :credit_amount, :decimal, null: false, precision: 10, scale: 2, default: 0
+      add :debit_amount, :decimal, null: false, precision: 10, scale: 2, default: 0
+      add :reference, :string, null: false
+      add :value_date, :date, null: false
+      add :opening_balance, :decimal, null: false, precision: 10, scale: 2
+      add :closing_balance, :decimal, null: false, precision: 10, scale: 2
 
-       timestamps()
-     end
+      timestamps()
+    end
 
-     create index(:transactions, [:from_account_id])
-     create index(:transactions, [:to_account_id])
-     create index(:transactions, [:type])
-     create index(:transactions, [:status])
-
-
+    create index(:transactions, [:from_account_id])
+    create index(:transactions, [:to_account_id])
+    create index(:transactions, [:type])
+    create index(:transactions, [:status])
 
   end
-
 end
