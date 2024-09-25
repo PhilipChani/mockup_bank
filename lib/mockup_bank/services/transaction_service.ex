@@ -5,12 +5,16 @@ defmodule MockupBank.Service.TransactionService do
   import Ecto.Query
 
   # Function to create a new account
-  def create_account(%{email: email, name: name, initial_balance: initial_balance, currency: currency, account_type: account_type}) do
+  def create_account(params) do
+
+    params = Enum.into(params, %{}, fn {k, v} -> {String.to_atom(k), v} end)
+    %{email: email, name: name, initial_balance: initial_balance, currency: currency, account_type: account_type} = params
+
     # Start a database transaction
     Repo.transaction(fn ->
       # Attempt to find or create an account user, then create an account, and finally create an initial deposit transaction
-      with {:ok, account_user} <- find_or_create_account_user(email, name) |> IO.inspect,
-           {:ok, user_account} <- do_create_account(account_user, initial_balance, currency, account_type) |> IO.inspect,
+      with {:ok, account_user} <- find_or_create_account_user(email, name, params),
+           {:ok, user_account} <- do_create_account(account_user, initial_balance, currency, account_type),
            {:ok, _transaction} <- create_transaction(nil, user_account, initial_balance, "initial_deposit") do
         # Return the created user account if all operations succeed
         user_account
@@ -118,21 +122,22 @@ defmodule MockupBank.Service.TransactionService do
   end
 
   # Private function to find or create an account user
-  defp find_or_create_account_user(email, name) do
+  defp find_or_create_account_user(email, name, params \\ %{}) do
     # Attempt to get the account user by email
     case Repo.get_by(AccountUsers, email: email) do
       # If the account user does not exist, create a new account user
-      nil -> create_account_user(email, name)
+      nil -> create_account_user(email, name, params)
       # If the account user exists, return it
       account_user -> {:ok, account_user}
     end
   end
 
   # Private function to create an account user
-  defp create_account_user(email, name) do
+  defp create_account_user(_email, _name, params) do
+
     # Create a new AccountUsers struct and insert it into the database
     %AccountUsers{}
-    |> AccountUsers.changeset(%{email: email, name: name, role: "account_holder"})
+    |> AccountUsers.changeset(params)
     |> Repo.insert()
   end
 

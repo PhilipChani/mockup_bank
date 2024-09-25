@@ -6,6 +6,20 @@ defmodule MockupBank.Repo.Migrations.AccountUsers do
     create table(:account_users) do
       add :email, :string, null: false
       add :name, :string, null: false
+      add :first_name, :string
+      add :last_name, :string
+      add :phone, :string
+      add :date_of_birth, :date
+      add :address, :string
+      add :city, :string
+      add :state, :string
+      add :zip, :string
+      add :country, :string
+      add :region, :string
+      add :postal_code, :string
+      add :identifier_type, :string
+      add :identifier_number, :string
+      add :currency, :string
       add :role, :string, null: false
 
       timestamps()
