@@ -17,10 +17,7 @@ defmodule MockupBankWeb.BankJSON do
       currency: account.currency,
       account_type: account.account_type,
       status: account.status,
-      profile: %{
-        email: account.account_users.email,
-        name: account.account_users.name
-      }
+      profile: account.account_users
     }
   end
 

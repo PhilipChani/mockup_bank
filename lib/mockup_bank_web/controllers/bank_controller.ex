@@ -4,8 +4,8 @@ defmodule MockupBankWeb.BankController do
 
   action_fallback MockupBankWeb.FallbackController
 
-  def create_account(conn, %{"email" => email, "name" => name, "initial_balance" => initial_balance, "currency" => currency, "account_type" => account_type}) do
-    with {:ok, account} <- AccountTransactionService.create_account(%{email: email, name: name, initial_balance: initial_balance, currency: currency, account_type: account_type}) do
+  def create_account(conn, params) do
+    with {:ok, account} <- AccountTransactionService.create_account(params) do
       conn
       |> put_status(:created)
       |> render("account.json", account: account)
