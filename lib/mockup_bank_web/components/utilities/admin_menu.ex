@@ -55,7 +55,7 @@ defmodule MockupBankWeb.Components.Utilities.AdminMenu do
   defp balance_inquiry(_user_rights) do
     %{
       id: 2,
-      title: "Balance Iquiry",
+      title: "Balance Inquiry",
       icon: "home",
       href: "/Main/balanceInqiry",
       user_access: {:miscellaneous, :dashboard},
