@@ -1,6 +1,5 @@
 defmodule MockupBankWeb.BankJSON do
 
-
   def account(%{account: account}) do
     %{
       account_number: account.account_number,
@@ -11,14 +10,75 @@ defmodule MockupBankWeb.BankJSON do
     }
   end
 
+  def by_account_number(%{account: account}) do
+    %{
+      account_number: account.account_number,
+      balance: Decimal.to_string(account.balance, :normal),
+      currency: account.currency,
+      account_type: account.account_type,
+      status: account.status,
+      profile: %{
+        email: account.account_users.email,
+        name: account.account_users.name
+      }
+    }
+  end
+
+  @spec account_with_transaction(%{
+          :account =>
+            atom()
+            | %{
+                :account_number => any(),
+                :account_type => any(),
+                :balance => Decimal.t(),
+                :currency => any(),
+                :status => any(),
+                optional(any()) => any()
+              },
+          :transaction =>
+            atom()
+            | %{
+                :amount => Decimal.t(),
+                :description => any(),
+                :id => any(),
+                :inserted_at => any(),
+                :status => any(),
+                :type => any(),
+                optional(any()) => any()
+              },
+          optional(any()) => any()
+        }) :: %{
+          account: %{
+            account_number: any(),
+            account_type: any(),
+            balance: binary(),
+            currency: any(),
+            status: any()
+          },
+          transaction: %{
+            amount: binary(),
+            description: any(),
+            id: any(),
+            inserted_at: any(),
+            status: any(),
+            type: any()
+          }
+        }
   def account_with_transaction(%{account: account, transaction: transaction}) do
     %{
       account: account(%{account: account}),
       transaction: %{
         id: transaction.id,
-        type: transaction.type,
-        amount: transaction.amount,
+        book_date: transaction.inserted_at,
+        reference: transaction.reference,
         description: transaction.description,
+        value_date: transaction.value_date,
+        debit: Decimal.to_string(transaction.debit_amount, :normal),
+        credit: Decimal.to_string(transaction.credit_amount, :normal),
+        opening: Decimal.to_string(transaction.opening_balance, :normal),
+        closing: Decimal.to_string(transaction.closing_balance, :normal),
+        type: transaction.type,
+        amount: Decimal.to_string(transaction.amount, :normal),
         status: transaction.status,
         inserted_at: transaction.inserted_at
       }
@@ -32,7 +92,7 @@ defmodule MockupBankWeb.BankJSON do
       transaction: %{
         id: transaction.id,
         type: transaction.type,
-        amount: transaction.amount,
+        amount: Decimal.to_string(transaction.amount, :normal),
         description: transaction.description,
         status: transaction.status,
         inserted_at: transaction.inserted_at
@@ -54,12 +114,17 @@ defmodule MockupBankWeb.BankJSON do
       transactions: Enum.map(transactions, fn transaction ->
         %{
           id: transaction.id,
-          type: transaction.type,
-          amount: transaction.amount,
+          book_date: transaction.inserted_at,
+          reference: transaction.reference,
           description: transaction.description,
+          value_date: transaction.value_date,
+          debit: Decimal.to_string(transaction.debit_amount, :normal),
+          credit: Decimal.to_string(transaction.credit_amount, :normal),
+          opening: Decimal.to_string(transaction.opening_balance, :normal),
+          closing: Decimal.to_string(transaction.closing_balance, :normal),
+          type: transaction.type,
+          amount: Decimal.to_string(transaction.amount, :normal),
           status: transaction.status,
-          from_account_id: transaction.from_account_id,
-          to_account_id: transaction.to_account_id,
           inserted_at: transaction.inserted_at
         }
       end)
@@ -69,7 +134,7 @@ defmodule MockupBankWeb.BankJSON do
   def balance(%{account: account}) do
     %{
       account_number: account.account_number,
-      balance: account.balance,
+      balance: Decimal.to_string(account.balance, :normal),
       currency: account.currency,
       last_transaction_date: account.last_transaction_date
     }
