@@ -8,7 +8,7 @@
     pagination={@pagination}
     selected_column={@selected_column}
   rows={@streams.transactions}
-  row_click={fn {_id, transaction} -> JS.navigate(~p"/transactions/#{transaction}/details") end}
+ 
 >
   <:col :let={{_id, transaction}} filter_item="reference" label="Reference"><%= transaction.reference %></:col>
   <:col :let={{_id, transaction}} filter_item="type" label="Type"><%= transaction.type %></:col>
