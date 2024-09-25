@@ -1,0 +1,3 @@
+<%= for menu <- get_menu() do %>
+  <%= Phoenix.Template.render(MockupBankWeb.Partials, "_option_menu2", "html", menu: menu) %>
+<% end %>

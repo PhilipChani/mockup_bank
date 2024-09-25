@@ -14,7 +14,7 @@ defmodule MockupBankWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, html: {MockupBankWeb.Layouts, :other}
+    plug :put_root_layout, html: {MockupBankWeb.Layouts, :admin}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -23,24 +23,30 @@ defmodule MockupBankWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/Main", MockupBankWeb.MainLive do
+  scope "/", MockupBankWeb do
     pipe_through :browser2
+    live "/", MainLive.Index, :index
 
-    live "/", Index, :index
-    live "/listAllTransactions", Transactions, :index
-    live "/AccountCreation", PostAcc, :index
-    live "/CashDeposit", Deposit, :index
-    live "/cashWithdraw", Withdraw, :index
-    live "/balanceInqiry", BalanceInquiry, :index
-    live "/Transfer", Transfer, :index
-    live "/LookupAccount", LookupAccount, :index
+    scope "/Main", MainLive do
+      live "/", Index, :index
+      live "/listAllTransactions", Transactions, :index
+      live "/AccountCreation", PostAcc, :index
+      live "/CashDeposit", Deposit, :index
+      live "/cashWithdraw", Withdraw, :index
+      live "/balanceInqiry", BalanceInquiry, :index
+      live "/Transfer", Transfer, :index
+      live "/LookupAccount", LookupAccount, :index
+    end
+
+    live "/Transactions", TransactionsLive.Index, :index
+
 
   end
 
   scope "/", MockupBankWeb do
     pipe_through :browser
 
-    live "/", HomeLive.Index, :index
+    # live "/", HomeLive.Index, :index
     live "/mesages", TxnLive.Index, :index
     live "/mesages/credit", TxnLive.Index, :credit
     live "/mesages/debit", TxnLive.Index, :debit

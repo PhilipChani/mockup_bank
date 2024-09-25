@@ -86,6 +86,11 @@ defmodule MockupBankWeb do
       # Core UI components and translation
       import MockupBankWeb.CoreComponents
       import MockupBankWeb.Gettext
+      import MockupBankWeb.Utilities.{Utils, Permitted, Pagination, Sorting}
+      import MockupBankWeb.Components.Utilities.MainMenu 
+      import MockupBankWeb.CoreComponents.Utilities.CustomTableComponents
+
+
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

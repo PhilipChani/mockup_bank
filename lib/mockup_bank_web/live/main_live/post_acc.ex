@@ -1,11 +1,21 @@
 defmodule MockupBankWeb.MainLive.PostAcc do
     use MockupBankWeb, :live_view
   
+
+    alias MockupBank.EmbeededSchema.Default
+  
   
     @impl true
     def mount(_params, _session, socket) do
+      struct = %{}
+      changeset = Default.change(struct)
+      json_data = "{}"
+
       {:ok,
        socket
+       |> assign(:json_data, json_data)
+       |> assign(:struct, struct)
+       |> assign_form(changeset)
        |> assign(:json_data, "{}")
     }
     end
@@ -20,13 +30,14 @@ defmodule MockupBankWeb.MainLive.PostAcc do
 
     defp apply_action(socket, :index, _params) do
       socket
+      |> assign(:title, "Post Account")
       |> assign(:page_title, "Post Account")
     end
 
 
 
     @impl true
-    def handle_event("save", params, socket) do
+    def handle_event("save", %{"default" => params}, socket) do
       process_message(socket, params)
     end
   
@@ -47,7 +58,7 @@ defmodule MockupBankWeb.MainLive.PostAcc do
         
     def send_data_to_api(request) do
   
-        IO.inspect(request, label: "======== ACCTECB5567D0F18C4BE ============")
+        IO.inspect(request, label: "======== ACCTECB5567D0F18C4BE   ACCTCA95466CA8BDD307 ============")
         message = Jason.encode!(request)
         response =
           try do
@@ -72,7 +83,19 @@ defmodule MockupBankWeb.MainLive.PostAcc do
         |> Map.put("response", response)
     end
   
+    defp assign_form(socket, %Ecto.Changeset{} = changeset) do
+      assign(socket, :form, to_form(changeset))
+    end
 
+
+    def account_types() do
+
+      [
+        {"National Registration Number", "NRC"},
+        {"Passport", "PASSPORT"},
+      ]
+    end
+  
  
 end
   

@@ -3,3 +3,11 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+
+
+@import "../vendor/dist/css/vendors/tom-select.css";
+@import "../vendor/dist/css/vendors/litepicker.css";
+@import "../vendor/dist/css/vendors/tippy.css";
+@import "../vendor/dist/css/vendors/simplebar.css";
+@import "../vendor/dist/css/themes/waveform.css";
+@import "../vendor/dist/css/app.css";

@@ -2,10 +2,20 @@ defmodule MockupBankWeb.MainLive.Withdraw do
     use MockupBankWeb, :live_view
   
   
+    alias MockupBank.EmbeededSchema.Default
+  
+  
     @impl true
     def mount(_params, _session, socket) do
+      struct = %{}
+      changeset = Default.change(struct)
+      json_data = "{}"
+
       {:ok,
        socket
+       |> assign(:json_data, json_data)
+       |> assign(:struct, struct)
+       |> assign_form(changeset)
        |> assign(:json_data, "{}")
     }
     end
@@ -20,13 +30,14 @@ defmodule MockupBankWeb.MainLive.Withdraw do
   
     defp apply_action(socket, :index, _params) do
       socket
+      |> assign(:title, "Cash Withdraw")
       |> assign(:page_title, "Cash Withdraw")
     end
   
   
   
     @impl true
-    def handle_event("save", params, socket) do
+    def handle_event("save",  %{"default" => params}, socket) do
       process_message(socket, params)
     end
   
@@ -70,6 +81,11 @@ defmodule MockupBankWeb.MainLive.Withdraw do
     
         request
         |> Map.put("response", response)
+    end
+  
+  
+    defp assign_form(socket, %Ecto.Changeset{} = changeset) do
+      assign(socket, :form, to_form(changeset))
     end
   
   
