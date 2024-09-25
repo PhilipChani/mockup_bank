@@ -34,6 +34,7 @@ defmodule MockupBankWeb.MainLive.PostAcc do
       response =
       data
       |> Map.put("name", "#{data["first_name"]} #{data["last_name"]}")
+      |> Map.put("balance", data["initial_balance"])
       |> send_data_to_api()
   
       {:noreply,
@@ -46,7 +47,7 @@ defmodule MockupBankWeb.MainLive.PostAcc do
         
     def send_data_to_api(request) do
   
-        IO.inspect(request, label: "====================")
+        IO.inspect(request, label: "======== ACCTECB5567D0F18C4BE ============")
         message = Jason.encode!(request)
         response =
           try do
