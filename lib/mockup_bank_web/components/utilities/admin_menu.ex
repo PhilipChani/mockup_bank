@@ -10,6 +10,8 @@ defmodule MockupBankWeb.Components.Utilities.AdminMenu do
       create_acc(user_rights),
       transfer(user_rights),
       transactions(user_rights),
+      bank_accounts(user_rights),
+      account_holders(user_rights),
       # accounts(user_rights),
       # maintenance(user_rights)
     ]
@@ -25,6 +27,30 @@ defmodule MockupBankWeb.Components.Utilities.AdminMenu do
       type: :link
     }
   end
+
+  defp bank_accounts(_user_rights) do
+    %{
+      id: 2,
+      title: "Bank Accounts",
+      icon: "home",
+      href: "/BankAccounts",
+      user_access: {:miscellaneous, :dashboard},
+      type: :link
+    }
+  end
+
+
+  defp account_holders(_user_rights) do
+    %{
+      id: 2,
+      title: "Account Holders",
+      icon: "home",
+      href: "/AccountHolders",
+      user_access: {:miscellaneous, :dashboard},
+      type: :link
+    }
+  end
+
 
   defp balance_inquiry(_user_rights) do
     %{
@@ -132,122 +158,122 @@ defmodule MockupBankWeb.Components.Utilities.AdminMenu do
 
 
 
-  defp maintenance(user_rights) do
-    %{
-      id: 20,
-      title: "Maintenance",
-      icon: "settings",
-      user_access: {:settings, :view},
-      type: :dropdown,
-      options: [
-        user_management(user_rights),
-        system_services(user_rights)
-      ]
-    }
-  end
+  # defp maintenance(user_rights) do
+  #   %{
+  #     id: 20,
+  #     title: "Maintenance",
+  #     icon: "settings",
+  #     user_access: {:settings, :view},
+  #     type: :dropdown,
+  #     options: [
+  #       user_management(user_rights),
+  #       system_services(user_rights)
+  #     ]
+  #   }
+  # end
 
-  defp user_management(user_rights) do
-    %{
-      id: 20,
-      title: "User Management",
-      icon: "users",
-      user_access: {:user_management, :view},
-      type: :dropdown,
-      options: [
-        system_users(user_rights),
-        agents(user_rights),
-        user_rights(user_rights)
-      ]
-    }
-  end
+  # defp user_management(user_rights) do
+  #   %{
+  #     id: 20,
+  #     title: "User Management",
+  #     icon: "users",
+  #     user_access: {:user_management, :view},
+  #     type: :dropdown,
+  #     options: [
+  #       system_users(user_rights),
+  #       agents(user_rights),
+  #       user_rights(user_rights)
+  #     ]
+  #   }
+  # end
 
-  defp system_users(_user_rights) do
-    %{
-      id: 0,
-      title: "System Users",
-      icon: "users",
-      href: "/userManagement",
-      user_access: {:users, :view},
-      type: :link
-    }
-  end
+  # defp system_users(_user_rights) do
+  #   %{
+  #     id: 0,
+  #     title: "System Users",
+  #     icon: "users",
+  #     href: "/userManagement",
+  #     user_access: {:users, :view},
+  #     type: :link
+  #   }
+  # end
 
-  defp agents(_user_rights) do
-    %{
-      id: 1,
-      title: "Agents",
-      icon: "user",
-      href: "/agentsManagement",
-      user_access: {:agents, :view},
-      type: :link
-    }
-  end
+  # defp agents(_user_rights) do
+  #   %{
+  #     id: 1,
+  #     title: "Agents",
+  #     icon: "user",
+  #     href: "/agentsManagement",
+  #     user_access: {:agents, :view},
+  #     type: :link
+  #   }
+  # end
 
-  defp user_rights(_user_rights) do
-    %{
-      id: 2,
-      title: "User Roles & Rights",
-      icon: "unlock",
-      href: "/user_roles",
-      user_access: {:user_roles, :view},
-      type: :link
-    }
-  end
+  # defp user_rights(_user_rights) do
+  #   %{
+  #     id: 2,
+  #     title: "User Roles & Rights",
+  #     icon: "unlock",
+  #     href: "/user_roles",
+  #     user_access: {:user_roles, :view},
+  #     type: :link
+  #   }
+  # end
 
-  defp system_services(user_rights) do
-    %{
-      id: 20,
-      title: "Catalog",
-      icon: "server",
-      user_access: {:services, :view},
-      type: :dropdown,
-      options: [
-        services(user_rights),
-        banks(user_rights),
-        locations(user_rights),
-        commissions(user_rights),
-      ]
-    }
-  end
+  # defp system_services(user_rights) do
+  #   %{
+  #     id: 20,
+  #     title: "Catalog",
+  #     icon: "server",
+  #     user_access: {:services, :view},
+  #     type: :dropdown,
+  #     options: [
+  #       services(user_rights),
+  #       banks(user_rights),
+  #       locations(user_rights),
+  #       commissions(user_rights),
+  #     ]
+  #   }
+  # end
 
-  defp services(_user_rights) do
-    %{
-      id: 2,
-      title: "Services",
-      icon: "zap",
-      href: "/services",
-      user_access: {:user_roles, :view},
-      type: :link
-    }
-  end
-  defp banks(_user_rights) do
-    %{
-      id: 2,
-      title: "Banks",
-      icon: "zap",
-      href: "/banks",
-      user_access: {:user_roles, :view},
-      type: :link
-    }
-  end
-  defp locations(_user_rights) do
-    %{
-      id: 2,
-      title: "Locations",
-      icon: "zap",
-      href: "/locations",
-      user_access: {:user_roles, :view},
-      type: :link
-    }
-  end
-  defp commissions(_user_rights) do
-    %{
-      id: 2,
-      title: "Commissions",
-      icon: "zap",
-      href: "/commissions",
-      user_access: {:user_roles, :view},
-      type: :link
-    }
-  end
+  # defp services(_user_rights) do
+  #   %{
+  #     id: 2,
+  #     title: "Services",
+  #     icon: "zap",
+  #     href: "/services",
+  #     user_access: {:user_roles, :view},
+  #     type: :link
+  #   }
+  # end
+  # defp banks(_user_rights) do
+  #   %{
+  #     id: 2,
+  #     title: "Banks",
+  #     icon: "zap",
+  #     href: "/banks",
+  #     user_access: {:user_roles, :view},
+  #     type: :link
+  #   }
+  # end
+  # defp locations(_user_rights) do
+  #   %{
+  #     id: 2,
+  #     title: "Locations",
+  #     icon: "zap",
+  #     href: "/locations",
+  #     user_access: {:user_roles, :view},
+  #     type: :link
+  #   }
+  # end
+  # defp commissions(_user_rights) do
+  #   %{
+  #     id: 2,
+  #     title: "Commissions",
+  #     icon: "zap",
+  #     href: "/commissions",
+  #     user_access: {:user_roles, :view},
+  #     type: :link
+  #   }
+  # end
 end

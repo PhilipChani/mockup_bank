@@ -58,7 +58,7 @@ defmodule MockupBankWeb.MainLive.PostAcc do
         
     def send_data_to_api(request) do
   
-        IO.inspect(request, label: "======== ACCTECB5567D0F18C4BE   ACCTCA95466CA8BDD307 ============")
+        IO.inspect(request, label: "======== ACCTCA95466CA8BDD307 ============")
         message = Jason.encode!(request)
         response =
           try do

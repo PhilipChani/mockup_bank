@@ -1,4 +1,4 @@
-defmodule MockupBank.Readers.Transactions do
+defmodule MockupBank.Readers.BankAccounts do
     @moduledoc """
     The ContextTransactionsManagement context.
     """
@@ -6,7 +6,7 @@ defmodule MockupBank.Readers.Transactions do
     import Ecto.Query, warn: false
     import MockupBank.DefaultQueries
     alias MockupBank.Repo
-    alias MockupBank.Database.Transaction, as: Transactions
+    alias MockupBank.Database.UserAccounts, as: Transactions
   
     @query_params Application.compile_env(:mockup_bank, :query_params)
   
@@ -25,11 +25,10 @@ defmodule MockupBank.Readers.Transactions do
 
     def run_list(params \\ @query_params) do
         Transactions
-      # |> status_query()
-      #    |> preload([:maker, :checker])
-      |> sorting_query(params)
-      |> search_filter(params)
-      |> pagination_query(params)
+        |> preload([:account_users])
+        |> sorting_query(params)
+        |> search_filter(params)
+        |> pagination_query(params)
     end
    
   
@@ -57,10 +56,10 @@ defmodule MockupBank.Readers.Transactions do
       query
       |> where(
         [a],
-        fragment("lower(?) LIKE lower(?)", a.type, ^"%#{search}%") or
-          fragment("lower(?) LIKE lower(?)", a.description, ^"%#{search}%") or
+        fragment("lower(?) LIKE lower(?)", a.account_number, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.currency, ^"%#{search}%") or
           fragment("lower(?) LIKE lower(?)", a.status, ^"%#{search}%") or
-          fragment("lower(?) LIKE lower(?)", a.reference, ^"%#{search}%") 
+          fragment("lower(?) LIKE lower(?)", a.account_type, ^"%#{search}%") 
       )
     end
   

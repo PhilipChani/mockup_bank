@@ -1,4 +1,4 @@
-defmodule MockupBank.Readers.Transactions do
+defmodule MockupBank.Readers.AccountHolders do
     @moduledoc """
     The ContextTransactionsManagement context.
     """
@@ -6,7 +6,7 @@ defmodule MockupBank.Readers.Transactions do
     import Ecto.Query, warn: false
     import MockupBank.DefaultQueries
     alias MockupBank.Repo
-    alias MockupBank.Database.Transaction, as: Transactions
+    alias MockupBank.Database.AccountUsers, as: Transactions
   
     @query_params Application.compile_env(:mockup_bank, :query_params)
   
@@ -25,7 +25,6 @@ defmodule MockupBank.Readers.Transactions do
 
     def run_list(params \\ @query_params) do
         Transactions
-      # |> status_query()
       #    |> preload([:maker, :checker])
       |> sorting_query(params)
       |> search_filter(params)
@@ -57,10 +56,19 @@ defmodule MockupBank.Readers.Transactions do
       query
       |> where(
         [a],
-        fragment("lower(?) LIKE lower(?)", a.type, ^"%#{search}%") or
-          fragment("lower(?) LIKE lower(?)", a.description, ^"%#{search}%") or
-          fragment("lower(?) LIKE lower(?)", a.status, ^"%#{search}%") or
-          fragment("lower(?) LIKE lower(?)", a.reference, ^"%#{search}%") 
+        fragment("lower(?) LIKE lower(?)", a.email, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.name, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.phone, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.address, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.city, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.state, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.zip, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.country, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.region, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.postal_code, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.identifier_type, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.identifier_number, ^"%#{search}%") or
+          fragment("lower(?) LIKE lower(?)", a.currency, ^"%#{search}%") 
       )
     end
   

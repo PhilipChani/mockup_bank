@@ -39,6 +39,8 @@ defmodule MockupBankWeb.Router do
     end
 
     live "/Transactions", TransactionsLive.Index, :index
+    live "/BankAccounts", BankAccountsLive.Index, :index
+    live "/AccountHolders", AccountHoldersLive.Index, :index
 
 
   end

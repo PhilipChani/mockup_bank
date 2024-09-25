@@ -1,5 +1,5 @@
 <.header>
-  Listing Transactions
+  <%= @page_title %>
 </.header>
 
 <.tabular_table2
@@ -8,14 +8,14 @@
     pagination={@pagination}
     selected_column={@selected_column}
   rows={@streams.transactions}
-  row_click={fn {_id, transaction} -> JS.navigate(~p"/transactions/#{transaction}/details") end}
+  row_click={fn {_id, transaction} -> JS.navigate(~p"/") end}
 >
-  <:col :let={{_id, transaction}} filter_item="reference" label="Reference"><%= transaction.reference %></:col>
-  <:col :let={{_id, transaction}} filter_item="type" label="Type"><%= transaction.type %></:col>
+  <:col :let={{_id, transaction}} filter_item="account_number" label="Account Number"><%= transaction.account_number %></:col>
+  <:col :let={{_id, transaction}} filter_item="account_type" label="Type"><%= transaction.account_type %></:col>
+  <:col :let={{_id, transaction}} filter_item="currency" label="Currency"><%= transaction.currency %></:col>
   <:col :let={{_id, transaction}} filter_item="status" label="Status"><%= transaction.status %></:col>
-  <:col :let={{_id, transaction}} filter_item="amount"  label="Amount"><%= transaction.amount %></:col>
-  <:col :let={{_id, transaction}} filter_item="opening_balance" label="Opening Balance"><%= transaction.opening_balance %></:col>
-  <:col :let={{_id, transaction}} filter_item="closing_balance" label="Closing Balance"><%= transaction.closing_balance %></:col>
+  <:col :let={{_id, transaction}} filter_item="balance"  label="Balance"><%= transaction.balance %></:col>
+  <:col :let={{_id, transaction}} filter_item="last_transaction_date" label="Last Transaction Date"><%= transaction.last_transaction_date %></:col>
   <:col :let={{_id, transaction}} filter_item="inserted_at" label="Datetime"><%= transaction.inserted_at %></:col>
 </.tabular_table2>
 
