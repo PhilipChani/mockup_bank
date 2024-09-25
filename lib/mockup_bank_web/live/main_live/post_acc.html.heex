@@ -1,0 +1,177 @@
+
+<form id="service-form" phx-submit="save">
+  <div class="space-y-12">
+
+    <div class="border-b border-white/10 pb-12">
+      <h2 class="text-base font-semibold leading-7 text-white">Personal Information</h2>
+
+      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+      
+        <div class="sm:col-span-3">
+          <label for="first-name" class="block text-sm font-medium leading-6 text-white">First name</label>
+          <div class="mt-2">
+            <input type="text" name="first_name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <label for="last-name" class="block text-sm font-medium leading-6 text-white">Last name</label>
+          <div class="mt-2">
+            <input type="text" name="last_name" id="last-name" autocomplete="family-name" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+          </div>
+        </div>
+
+        <div class="sm:col-span-4">
+          <label for="email" class="block text-sm font-medium leading-6 text-white">Email address</label>
+          <div class="mt-2">
+            <input id="email" name="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <label for="country" class="block text-sm font-medium leading-6 text-white">Country</label>
+          <div class="mt-2">
+            <select id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black">
+              <option>Malawi</option>
+              <option>Zambia</option>
+              <option>Zimbabwe</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-span-full">
+          <label for="street-address" class="block text-sm font-medium leading-6 text-white">Street address</label>
+          <div class="mt-2">
+            <input type="text" name="street_address" id="street-address" autocomplete="street-address" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+          </div>
+        </div>
+
+        <div class="sm:col-span-2 sm:col-start-1">
+          <label for="city" class="block text-sm font-medium leading-6 text-white">City</label>
+          <div class="mt-2">
+            <input type="text" name="city" id="city" autocomplete="address-level2" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+          </div>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label for="region" class="block text-sm font-medium leading-6 text-white">State / Province</label>
+          <div class="mt-2">
+            <input type="text" name="region" id="region" autocomplete="address-level1" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+          </div>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label for="postal-code" class="block text-sm font-medium leading-6 text-white">ZIP / Postal code</label>
+          <div class="mt-2">
+            <input type="text" name="postal-code" id="postal-code" autocomplete="postal-code" class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-base font-semibold leading-7 text-white">Account</h2>
+    
+    <div class="sm:col-span-4">
+        <label for="initial_balance" class="block text-sm font-medium leading-6 text-white">Amount</label>
+        <div class="mt-2">
+        <input id="initial_balance" name="initial_balance" type="text"  class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+        </div>
+    </div>
+
+    <div class="border-b border-white/10 pb-12">
+      <div class="mt-10  grid grid-cols-2 gap-10 gap-y-20">
+        <fieldset>
+          <legend class="text-sm font-semibold leading-6 text-white">Currency</legend>
+          <div class="mt-6 space-y-6">
+            <div class="flex items-center gap-x-3">
+              <input id="currency-ml" value="MAL" name="currency" type="radio" class="h-4 w-4 border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
+              <label for="currency-ml" class="block text-sm font-medium leading-6 text-white">Malawan Kwacha</label>
+            </div>
+            <div class="flex items-center gap-x-3">
+              <input id="currency-zm" value="ZMW" name="currency" type="radio" class="h-4 w-4 border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
+              <label for="currency-zm"  class="block text-sm font-medium leading-6 text-white">Zambia Kwacha</label>
+            </div>
+          
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="text-sm font-semibold leading-6 text-white">Account Type</legend>
+          <div class="mt-6 space-y-6">
+            <div class="flex items-center gap-x-3">
+              <input id="account_type-ml" value="current" name="account_type" type="radio" class="h-4 w-4 border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
+              <label for="account_type-ml" class="block text-sm font-medium leading-6 text-white">Current</label>
+            </div>
+            <div class="flex items-center gap-x-3">
+              <input id="account_type-zm" value="savings" name="account_type" type="radio" class="h-4 w-4 border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
+              <label for="account_type-zm"  class="block text-sm font-medium leading-6 text-white">Savings</label>
+            </div>
+          
+          </div>
+        </fieldset>
+
+
+        <fieldset>
+          <legend class="text-sm font-semibold leading-6 text-white">By Email</legend>
+          <div class="mt-6 space-y-6">
+            <div class="relative flex gap-x-3">
+              <div class="flex h-6 items-center">
+                <input id="comments" name="comments" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
+              </div>
+              <div class="text-sm leading-6">
+                <label for="comments" class="font-medium text-white">Comments</label>
+                <p class="text-gray-400">Get notified when someones posts a comment on a posting.</p>
+              </div>
+            </div>
+            <div class="relative flex gap-x-3">
+              <div class="flex h-6 items-center">
+                <input id="candidates" name="candidates" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
+              </div>
+              <div class="text-sm leading-6">
+                <label for="candidates" class="font-medium text-white">Candidates</label>
+                <p class="text-gray-400">Get notified when a candidate applies for a job.</p>
+              </div>
+            </div>
+            <div class="relative flex gap-x-3">
+              <div class="flex h-6 items-center">
+                <input id="offers" name="offers" type="checkbox" class="h-4 w-4 rounded border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
+              </div>
+              <div class="text-sm leading-6">
+                <label for="offers" class="font-medium text-white">Offers</label>
+                <p class="text-gray-400">Get notified when a candidate accepts or rejects an offer.</p>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend class="text-sm font-semibold leading-6 text-white">Notifications</legend>
+          <p class="mt-1 text-sm leading-6 text-gray-400">These are delivered via SMS to your mobile phone.</p>
+          <div class="mt-6 space-y-6">
+            <div class="flex items-center gap-x-3">
+              <input id="push-everything" name="notifications" type="radio" class="h-4 w-4 border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
+              <label for="push-everything" class="block text-sm font-medium leading-6 text-white">Everything</label>
+            </div>
+            <div class="flex items-center gap-x-3">
+              <input id="push-email" name="notifications" type="radio" class="h-4 w-4 border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
+              <label for="push-email" class="block text-sm font-medium leading-6 text-white">Same as email</label>
+            </div>
+            <div class="flex items-center gap-x-3">
+              <input id="push-nothing" name="notifications" type="radio" class="h-4 w-4 border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
+              <label for="push-nothing" class="block text-sm font-medium leading-6 text-white">No push notifications</label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 flex items-center justify-end gap-x-6">
+    <button type="button" class="text-sm font-semibold leading-6 text-white">Cancel</button>
+    <button type="submit" class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Enter</button>
+  </div>
+
+    <div class="mt-6" >
+        <span>Response</span>
+        <div id="json-viewer" phx-hook="JsonViewerHook" data-json={@json_data} style="width: 100%; height: 100%;"></div>
+    </div>
+</form>

@@ -69,8 +69,8 @@ defmodule MockupBankWeb.Components.LookupAccount do
     response =
         try do
           url(~p"/api/accounts/lookup")
-          |> String.replace("https//[", "")
-          |> String.replace("http//[", "")
+          |> String.replace("https://[", "")
+          |> String.replace("http://[", "")
           |> String.replace("]", "")
           |> String.replace("[", "")
           |> IO.inspect(label: "FULL PATH")
