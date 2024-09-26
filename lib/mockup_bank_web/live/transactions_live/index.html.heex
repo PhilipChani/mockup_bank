@@ -10,6 +10,7 @@
   rows={@streams.transactions}
  
 >
+  <:col :let={{_id, transaction}} filter_item="id" label="ID"><%= transaction.id %></:col>
   <:col :let={{_id, transaction}} filter_item="reference" label="Reference"><%= transaction.reference %></:col>
   <:col :let={{_id, transaction}} filter_item="type" label="Type"><%= transaction.type %></:col>
   <:col :let={{_id, transaction}} filter_item="status" label="Status"><%= transaction.status %></:col>

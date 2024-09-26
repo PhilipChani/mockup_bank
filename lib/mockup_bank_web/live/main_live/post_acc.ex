@@ -46,6 +46,7 @@ defmodule MockupBankWeb.MainLive.PostAcc do
       data
       |> Map.put("name", "#{data["first_name"]} #{data["last_name"]}")
       |> Map.put("balance", data["initial_balance"])
+      |> Map.put("role", "user")
       |> send_data_to_api()
   
       {:noreply,

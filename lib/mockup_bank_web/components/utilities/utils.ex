@@ -416,4 +416,14 @@ defmodule MockupBankWeb.Utilities.Utils do
       {"Active", "active"}
     ]
   end
+
+
+
+  def extract_email(data) do
+    if is_nil(data) == false and is_nil(data.account_users) == false do
+      data.account_users.email
+    else
+      "-"
+    end
+  end
 end
