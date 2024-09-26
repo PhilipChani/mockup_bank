@@ -22,7 +22,7 @@ defmodule MockupBank.Service.TransactionService do
         # Rollback the transaction if any operation fails
         {:error, changeset} -> Repo.rollback(changeset)
       end
-    end)
+    end) |> IO.inspect
   end
 
   # Function to credit an account
@@ -160,7 +160,8 @@ defmodule MockupBank.Service.TransactionService do
   defp get_account_by_number(account_number) do
     # Query the UserAccounts table to get the account by its number
     Repo.get_by(UserAccounts, account_number: account_number)
-    |> Repo.preload(:account_users)
+    |> Repo.preload([:account_users, account_users: :user_accounts])
+
   end
 
   # Private function to update the balance of an account
