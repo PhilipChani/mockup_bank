@@ -26,7 +26,7 @@ defmodule MockupBank.Database.Transaction do
     |> validate_required([:type, :amount, :status, :value_date, :opening_balance, :closing_balance])  # Validate that the required fields are present
     |> validate_inclusion(:type, ["credit", "debit", "transfer"])  # Validate that the type field is one of the allowed values
     |> validate_inclusion(:status, ["pending", "completed", "failed"])  # Validate that the status field is one of the allowed values
-    |> validate_number(:amount, greater_than: 0)  # Validate that the amount is greater than 0
+    |> validate_number(:amount, greater_than_or_equal_to: 0)  # Validate that the amount is greater than 0
     |> validate_number(:credit_amount, greater_than_or_equal_to: 0)  # Validate that the credit amount is greater than or equal to 0
     |> validate_number(:debit_amount, greater_than_or_equal_to: 0)  # Validate that the debit amount is greater than or equal to 0
     |> validate_number(:opening_balance, greater_than_or_equal_to: 0)  # Validate that the opening balance is greater than or equal to 0
