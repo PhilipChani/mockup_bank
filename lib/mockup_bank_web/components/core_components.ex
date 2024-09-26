@@ -42,15 +42,15 @@ defmodule MockupBankWeb.CoreComponents do
   slot :inner_block, required: true
 
   def modal(assigns) do
-    ~H"""
+    ~H""" 
     <div
       id={@id}
       phx-mounted={@show && show_modal(@id)}
       phx-remove={hide_modal(@id)}
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
-      class="relative z-50 hidden"
+      class="relative z-[99999] hidden"
     >
-      <div id={"#{@id}-bg"} class="bg-zinc-50/90 fixed inset-0 transition-opacity" aria-hidden="true" />
+      <div id={"#{@id}-bg"} class="bg-zinc-50/50 fixed inset-0 transition-opacity" aria-hidden="true" />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -59,8 +59,8 @@ defmodule MockupBankWeb.CoreComponents do
         aria-modal="true"
         tabindex="0"
       >
-        <div class="flex min-h-full items-center justify-center">
-          <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8">
+        <div class="flex min-h-full items-center shadow-xl justify-center">
+          <div class="w-full max-w-7xl p-4 sm:p-6 lg:py-8">
             <.focus_wrap
               id={"#{@id}-container"}
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
@@ -78,6 +78,7 @@ defmodule MockupBankWeb.CoreComponents do
                   <.icon name="hero-x-mark-solid" class="h-5 w-5" />
                 </button>
               </div>
+              
               <div id={"#{@id}-content"}>
                 <%= render_slot(@inner_block) %>
               </div>
@@ -115,7 +116,7 @@ defmodule MockupBankWeb.CoreComponents do
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class={[
-        "fixed top-2 right-2 mr-2 w-80 sm:w-96 z-50 rounded-lg p-3 ring-1",
+        "fixed top-2 right-2 mr-2 w-80 sm:w-96 z-50 rounded-lg p-3 ring-1 w-[90%] mx-auto bg-white relative rounded-md shadow-md transition-[margin-top,transform] duration-[0.4s,0.3s] -mt-16 group-[.show]:mt-16 group-[.modal-static]:scale-[1.05] dark:bg-darkmode-600 sm:w-[460px]",
         @kind == :info && "bg-emerald-50 text-emerald-800 ring-emerald-500 fill-cyan-900",
         @kind == :error && "bg-rose-50 text-rose-900 shadow-md ring-rose-500 fill-rose-900"
       ]}
@@ -123,10 +124,11 @@ defmodule MockupBankWeb.CoreComponents do
     >
       <p :if={@title} class="flex items-center gap-1.5 text-sm font-semibold leading-6">
         <.icon :if={@kind == :info} name="hero-information-circle-mini" class="h-4 w-4" />
-        <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" />
-        <%= @title %>
+        <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" /> <%= @title %>
       </p>
+      
       <p class="mt-2 text-sm leading-5"><%= msg %></p>
+      
       <button type="button" class="group absolute top-1 right-1 p-2" aria-label={gettext("close")}>
         <.icon name="hero-x-mark-solid" class="h-5 w-5 opacity-40 group-hover:opacity-70" />
       </button>
@@ -160,7 +162,7 @@ defmodule MockupBankWeb.CoreComponents do
         <%= gettext("Attempting to reconnect") %>
         <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
       </.flash>
-
+      
       <.flash
         id="server-error"
         kind={:error}
@@ -189,7 +191,7 @@ defmodule MockupBankWeb.CoreComponents do
         </:actions>
       </.simple_form>
   """
-  attr :for, :any, required: true, doc: "the data structure for the form"
+  attr :for, :any, required: true, doc: "the datastructure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
 
   attr :rest, :global,
@@ -212,6 +214,48 @@ defmodule MockupBankWeb.CoreComponents do
     """
   end
 
+
+    @doc """
+  Renders a simple form.
+
+  ## Examples
+
+      <.simple_form1 for={@form} phx-change="validate" phx-submit="save">
+        <.input field={@form[:email]} label="Email"/>
+        <.input field={@form[:username]} label="Username" />
+        <:actions>
+          <.button>Save</.button>
+        </:actions>
+      </.simple_form1>
+  """
+  attr :for, :any, required: true, doc: "the datastructure for the form"
+  attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
+
+  attr :rest, :global,
+    include: ~w(autocomplete name rel action enctype method novalidate target multipart),
+    doc: "the arbitrary HTML attributes to apply to the form tag"
+
+  slot :inner_block, required: true
+  slot :actions, doc: "the slot for form actions, such as a submit button"
+
+  def simple_form1(assigns) do
+    ~H"""
+    <div class="">
+    <.form :let={f} for={@for} as={@as} {@rest}>
+      <div class="mt-10 space-y-8 bg-white rounded-xl shadow-lg">
+        <div class="p-8" >
+          <%= render_slot(@inner_block, f) %>
+          <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-3">
+            <%= render_slot(action, f) %>
+          </div>
+        </div>
+      </div>
+    </.form>
+    </div>
+    """
+  end
+
+
   @doc """
   Renders a button.
 
@@ -220,6 +264,28 @@ defmodule MockupBankWeb.CoreComponents do
       <.button>Send!</.button>
       <.button phx-click="go" class="ml-2">Send!</.button>
   """
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def sign_up_button(assigns) do
+    ~H"""
+    <button
+      type={@type}
+      class={[
+        "phx-submit-loading:opacity-75 transition duration-200 border shadow-sm inline-flex items-center justify-center px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-centerdisabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary w-full py-3 xl:mr-3",
+        " ",
+        @class
+      ]}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
   attr :type, :string, default: nil
   attr :class, :string, default: nil
   attr :rest, :global, include: ~w(disabled form name value)
@@ -238,6 +304,194 @@ defmodule MockupBankWeb.CoreComponents do
       {@rest}
     >
       <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
+  Renders a add_btn.
+
+  ## Examples
+
+      <.button>Send!</.button>
+      <.button phx-click="go" class="ml-2">Send!</.button>
+  """
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def add_btn(assigns) do
+    ~H"""
+    <button
+      type={@type}
+      data-tw-merge=""
+      class={[
+        "phx-submit-loading:opacity-75 transition duration-200 border inline-flex items-center justify-center py-2 px-3 rounded-md",
+        "font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mr-2 shadow-md",
+        @class
+      ]}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
+  Renders a warning_btn.
+
+  ## Examples
+
+      <.warning_btn>Send!</.warning_btn>
+      <.warning_btn phx-click="go" class="ml-2">Send!</.warning_btn>
+  """
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def warning_btn(assigns) do
+    ~H"""
+    <button
+      type={@type}
+      data-tw-merge=""
+      class={[
+        "phx-submit-loading:opacity-75 transition duration-200 border inline-flex items-center justify-center py-2 px-3 rounded-md",
+        "transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-warning border-warning text-slate-900 dark:border-warning mb-2 mr-1 w-24 mb-2 mr-1 w-24",
+        @class
+      ]}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
+  Renders a success_btn.
+
+  ## Examples
+
+      <.button>Send!</.button>
+      <.success_btn phx-click="go" class="ml-2">Send!</.success_btn>
+  """
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def success_btn(assigns) do
+    ~H"""
+    <button
+      type={@type}
+      data-tw-merge=""
+      class={[
+        "phx-submit-loading:opacity-75 transition duration-200 border inline-flex items-center justify-center py-2 px-3 rounded-md",
+        "transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-success border-success text-slate-900 dark:border-success mb-2 mr-1 w-24 mb-2 mr-1 w-24",
+        @class
+      ]}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
+  Renders a save_btn.
+
+  ## Examples
+
+      <.button>Send!</.button>
+      <.button phx-click="go" class="ml-2">Send!</.button>
+  """
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def save_btn(assigns) do
+    ~H"""
+    <button
+      type={@type}
+      data-tw-merge=""
+      class={[
+        "phx-submit-loading:opacity-75 transition duration-200 border inline-flex items-center justify-center py-2 px-3 rounded-md",
+        "font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mr-2 shadow-md",
+        @class
+      ]}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
+  Renders a delete_btn.
+
+  ## Examples
+
+      <.button>Send!</.button>
+      <.delete_btn phx-click="go" class="ml-2">Send!</.delete_btn>
+  """
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def delete_btn(assigns) do
+    ~H"""
+    <button
+      type={@type}
+      data-tw-merge=""
+      class={[
+        "phx-submit-loading:opacity-75 transition duration-200 border inline-flex items-center justify-center py-2 px-3 rounded-md",
+        "transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-danger border-danger text-white dark:border-danger mb-2 mr-1 w-24 mb-2 mr-1 w-24",
+        @class
+      ]}
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
+  @doc """
+  Renders a report_btn.
+
+  ## Examples
+
+      <.button>Send!</.button>
+      <.button phx-click="go" class="ml-2">Send!</.button>
+  """
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def report_btn(assigns) do
+    ~H"""
+    <button
+      type={@type}
+      data-tw-merge=""
+      class={[
+        "phx-submit-loading:opacity-75 transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md",
+        "font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed box",
+        @class
+      ]}
+      {@rest}
+    >
+      <i data-tw-merge="" data-lucide="file-text" class="stroke-[1] mr-2 h-4 w-4"></i> <%= render_slot(
+        @inner_block
+      ) %>
     </button>
     """
   end
@@ -282,6 +536,8 @@ defmodule MockupBankWeb.CoreComponents do
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :errors, :list, default: []
+  attr :header, :string, default: ""
+  attr :placeholder, :string, default: ""
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
@@ -291,15 +547,42 @@ defmodule MockupBankWeb.CoreComponents do
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step)
 
-  def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
-    errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
+  slot :inner_block
 
+  def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
-    |> assign(:errors, Enum.map(errors, &translate_error(&1)))
+    |> assign(:errors, Enum.map(field.errors, &translate_error(&1)))
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> input()
+  end
+
+  
+  def input(%{type: "radio"} = assigns) do
+    assigns =
+      assign_new(assigns, :checked, fn ->
+        Phoenix.HTML.Form.normalize_value("radio", assigns[:value])
+      end)
+
+    ~H"""
+    <div phx-feedback-for={@name}>
+      <label class="flex items-center gap-4 text-sm leading-6 cursor-pointer text-zinc-600">
+        <input type="hidden" name={@name} value="false" />
+        <input
+          type="radio"
+          id={@id}
+          name={@name}
+          value="true"
+          checked={@checked}
+          class="rounded-full border-zinc-300 text-zinc-900 focus:ring-0"
+          {@rest}
+        /> <%= @label %>
+      </label>
+      
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
   end
 
   def input(%{type: "checkbox"} = assigns) do
@@ -309,9 +592,9 @@ defmodule MockupBankWeb.CoreComponents do
       end)
 
     ~H"""
-    <div>
-      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
-        <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
+    <div phx-feedback-for={@name}>
+      <label class="flex items-center gap-4 text-sm leading-6 cursor-pointer text-zinc-600">
+        <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
           id={@id}
@@ -320,9 +603,33 @@ defmodule MockupBankWeb.CoreComponents do
           checked={@checked}
           class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
           {@rest}
-        />
-        <%= @label %>
+        /> <%= @label %>
       </label>
+      
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
+  end
+
+  def input(%{type: "multi_select"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name}>
+      <.label for={@id}><%= @label %></.label>
+      
+      <select
+        id={@id}
+        name={@name}
+        multiple="multiple"
+        data-header={@prompt}
+        data-placeholder={@placeholder}
+        class="mt-2 block tom-select w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        multiple={@multiple}
+        {@rest}
+      >
+        <option :if={@prompt} value=""><%= @prompt %></option>
+         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
+      </select>
+      
       <.error :for={msg <- @errors}><%= msg %></.error>
     </div>
     """
@@ -330,18 +637,24 @@ defmodule MockupBankWeb.CoreComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div>
+    <div phx-feedback-for={@name}>
       <.label for={@id}><%= @label %></.label>
+      
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent 
+          [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent 
+          transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md placeholder:text-slate-400/90 focus:ring-4
+           focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent
+            dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 [&[type='file']]:border file:mr-4 file:py-2 file:px-4 file:rounded-l-md file:border-0 file:border-r-[1px] file:border-slate-100/10 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-500/70 hover:file:bg-200 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10 block px-4 py-36"
         multiple={@multiple}
         {@rest}
       >
         <option :if={@prompt} value=""><%= @prompt %></option>
-        <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
+         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
+      
       <.error :for={msg <- @errors}><%= msg %></.error>
     </div>
     """
@@ -349,13 +662,14 @@ defmodule MockupBankWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div>
+    <div phx-feedback-for={@name}>
       <.label for={@id}><%= @label %></.label>
-      <textarea
+       <textarea
         id={@id}
         name={@name}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[20rem]",
+          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+          "min-h-[6rem] phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -369,17 +683,23 @@ defmodule MockupBankWeb.CoreComponents do
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div>
+    <div phx-feedback-for={@name}>
       <.label for={@id}><%= @label %></.label>
+      
       <input
         type={@type}
         name={@name}
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
-          @errors == [] && "border-zinc-300 focus:border-zinc-400",
-          @errors != [] && "border-rose-400 focus:border-rose-400"
+          "disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent 
+          [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent 
+          transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md placeholder:text-slate-400/90 focus:ring-4
+           focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent
+            dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 [&[type='file']]:border file:mr-4 file:py-2 file:px-4 file:rounded-l-md file:border-0 file:border-r-[1px] file:border-slate-100/10 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-500/70 hover:file:bg-200 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10 block px-4 py-36",
+          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
+          @errors == [] && "",
+          @errors != [] && ""
         ]}
         {@rest}
       />
@@ -396,7 +716,7 @@ defmodule MockupBankWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class="inline-block mb-2 mt-3 group-[.form-inline]:mb-2 group-[.form-inline]:sm:mb-0 group-[.form-inline]:sm:mr-5 group-[.form-inline]:sm:text-right">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -409,9 +729,10 @@ defmodule MockupBankWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600">
-      <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" />
-      <%= render_slot(@inner_block) %>
+    <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600 phx-no-feedback:hidden">
+      <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" /> <%= render_slot(
+        @inner_block
+      ) %>
     </p>
     """
   end
@@ -432,12 +753,72 @@ defmodule MockupBankWeb.CoreComponents do
         <h1 class="text-lg font-semibold leading-8 text-zinc-800">
           <%= render_slot(@inner_block) %>
         </h1>
+        
         <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
+      
       <div class="flex-none"><%= render_slot(@actions) %></div>
     </header>
+    """
+  end
+
+  @doc """
+  Renders a header1 with title.
+  """
+  attr :class, :string, default: nil
+
+  slot :inner_block, required: true
+  slot :subtitle
+  slot :actions
+
+  def header1(assigns) do
+    ~H"""
+    <div class={[@actions != [] && "intro-y mt-8 flex flex-col items-center sm:flex-row", @class]}>
+      <div class="mr-auto">
+        <h2 class="text-lg font-medium">
+          <%= render_slot(@inner_block) %>
+        </h2>
+        
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+          <%= render_slot(@subtitle) %>
+        </p>
+      </div>
+      
+      <div class="mt-4 flex w-full flex-wrap gap-y-3 sm:mt-0 sm:w-auto">
+        <%= render_slot(@actions) %>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a header3 with title.
+  """
+  attr :class, :string, default: nil
+
+  slot :inner_block, required: true
+  slot :subtitle
+  slot :actions
+
+  def header3(assigns) do
+    ~H"""
+    <div class={[@actions != [] && "intro-y mt-8 flex flex-col items-center sm:flex-row", @class]}>
+      <div class="mr-auto">
+        <h2 class="text-lg font-medium">
+          <%= render_slot(@inner_block) %>
+        </h2>
+        
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+          <%= render_slot(@subtitle) %>
+        </p>
+      </div>
+      
+      <div class="mt-4 flex w-full flex-wrap gap-y-3 sm:mt-0 sm:w-auto">
+        <%= render_slot(@actions) %>
+      </div>
+    </div>
     """
   end
 
@@ -478,11 +859,13 @@ defmodule MockupBankWeb.CoreComponents do
         <thead class="text-sm text-left leading-6 text-zinc-500">
           <tr>
             <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
+            
             <th :if={@action != []} class="relative p-0 pb-4">
               <span class="sr-only"><%= gettext("Actions") %></span>
             </th>
           </tr>
         </thead>
+        
         <tbody
           id={@id}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
@@ -501,6 +884,7 @@ defmodule MockupBankWeb.CoreComponents do
                 </span>
               </div>
             </td>
+            
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
                 <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
@@ -524,7 +908,7 @@ defmodule MockupBankWeb.CoreComponents do
 
   ## Examples
 
-      <.list>
+      <.list> 
         <:item title="Title"><%= @post.title %></:item>
         <:item title="Views"><%= @post.views %></:item>
       </.list>
@@ -539,6 +923,7 @@ defmodule MockupBankWeb.CoreComponents do
       <dl class="-my-4 divide-y divide-zinc-100">
         <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
           <dt class="w-1/4 flex-none text-zinc-500"><%= item.title %></dt>
+          
           <dd class="text-zinc-700"><%= render_slot(item) %></dd>
         </div>
       </dl>
@@ -561,10 +946,9 @@ defmodule MockupBankWeb.CoreComponents do
     <div class="mt-16">
       <.link
         navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700 "
       >
-        <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
-        <%= render_slot(@inner_block) %>
+        <.icon name="hero-arrow-left-solid" class="h-3 w-3" /> <%= render_slot(@inner_block) %>
       </.link>
     </div>
     """
@@ -602,7 +986,6 @@ defmodule MockupBankWeb.CoreComponents do
   def show(js \\ %JS{}, selector) do
     JS.show(js,
       to: selector,
-      time: 300,
       transition:
         {"transition-all transform ease-out duration-300",
          "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
@@ -626,7 +1009,6 @@ defmodule MockupBankWeb.CoreComponents do
     |> JS.show(to: "##{id}")
     |> JS.show(
       to: "##{id}-bg",
-      time: 300,
       transition: {"transition-all transform ease-out duration-300", "opacity-0", "opacity-100"}
     )
     |> show("##{id}-container")
@@ -661,9 +1043,9 @@ defmodule MockupBankWeb.CoreComponents do
     # with our gettext backend as first argument. Translations are
     # available in the errors.po file (as we use the "errors" domain).
     if count = opts[:count] do
-      Gettext.dngettext(MockupBankWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(AppWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(MockupBankWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(AppWeb.Gettext, "errors", msg, opts)
     end
   end
 

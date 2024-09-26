@@ -1,15 +1,23 @@
 defmodule MockupBankWeb.MainLive.Transactions do
   use MockupBankWeb, :live_view
 
-
+  alias MockupBank.EmbeededSchema.Default
+  
+  
   @impl true
   def mount(_params, _session, socket) do
+    struct = %{}
+    changeset = Default.change(struct)
+    json_data = "{}"
+
     {:ok,
      socket
+     |> assign(:json_data, json_data)
+     |> assign(:struct, struct)
+     |> assign_form(changeset)
      |> assign(:json_data, "{}")
   }
   end
-
   @impl true  
   def handle_params(params, _url, socket) do
 
@@ -20,13 +28,14 @@ defmodule MockupBankWeb.MainLive.Transactions do
 
   defp apply_action(socket, :index, _params) do
     socket
+    |> assign(:title, "Transactions List")
     |> assign(:page_title, "Transactions List")
   end
 
 
 
   @impl true
-  def handle_event("save", params, socket) do
+  def handle_event("save", %{"default" => params}, socket) do
     process_message(socket, params)
   end
 
@@ -71,6 +80,8 @@ defmodule MockupBankWeb.MainLive.Transactions do
       |> Map.put("response", response)
   end
 
-
+  defp assign_form(socket, %Ecto.Changeset{} = changeset) do
+    assign(socket, :form, to_form(changeset))
+  end
 
 end

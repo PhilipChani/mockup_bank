@@ -1,0 +1,31 @@
+<.header>
+  Listing Transactions
+</.header>
+
+<.tabular_table2
+  id="transactions"
+    filter_params={@filter_params}
+    pagination={@pagination}
+    selected_column={@selected_column}
+  rows={@streams.transactions}
+ 
+>
+  <:col :let={{_id, transaction}} filter_item="reference" label="Reference"><%= transaction.reference %></:col>
+  <:col :let={{_id, transaction}} filter_item="type" label="Type"><%= transaction.type %></:col>
+  <:col :let={{_id, transaction}} filter_item="status" label="Status"><%= transaction.status %></:col>
+  <:col :let={{_id, transaction}} filter_item="amount"  label="Amount"><%= transaction.amount %></:col>
+  <:col :let={{_id, transaction}} filter_item="opening_balance" label="Opening Balance"><%= transaction.opening_balance %></:col>
+  <:col :let={{_id, transaction}} filter_item="closing_balance" label="Closing Balance"><%= transaction.closing_balance %></:col>
+  <:col :let={{_id, transaction}} filter_item="inserted_at" label="Datetime"><%= transaction.inserted_at %></:col>
+</.tabular_table2>
+
+<.modal :if={@live_action in [:new, :edit]} id="transaction-modal" show on_cancel={JS.patch(~p"/transactions")}>
+  <.live_component
+    module={AppWeb.TransactionLive.FormComponent}
+    id={@transaction.id || :new}
+    title={@page_title}
+    action={@live_action}
+    transaction={@transaction}
+    patch={~p"/transactions"}
+  />
+</.modal>

@@ -1,0 +1,37 @@
+<%# if  do %>
+  <a
+    href={~p"/users/settings"}
+    class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"
+  >
+    <i data-tw-merge="" data-lucide="users" class="stroke-[1] w-4 h-4 mr-2"></i> Profile
+  </a>
+  <div class="h-px my-2 -mx-2 bg-slate-200/60 dark:bg-darkmode-400"></div>
+  
+  <a
+    href="waveform-calendar.html"
+    class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"
+  >
+    <i data-tw-merge="" data-lucide="calendar-check2" class="stroke-[1] w-4 h-4 mr-2"></i>
+    Calendar
+  </a>
+  <a
+    href="waveform-compose.html"
+    class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"
+  >
+    <i data-tw-merge="" data-lucide="mail-search" class="stroke-[1] w-4 h-4 mr-2"></i> Email Inbox
+  </a>
+  <a
+    href="waveform-products.html"
+    class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"
+  >
+    <i data-tw-merge="" data-lucide="lock" class="stroke-[1] w-4 h-4 mr-2"></i> Products
+  </a>
+  <div class="h-px my-2 -mx-2 bg-slate-200/60 dark:bg-darkmode-400"></div>
+  
+  <a
+    href={~p"/users/log_out"}
+    class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"
+  >
+    <i data-tw-merge="" data-lucide="power" class="stroke-[1] w-4 h-4 mr-2"></i> Logout
+  </a>
+<%# end %>

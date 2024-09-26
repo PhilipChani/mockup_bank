@@ -1,0 +1,96 @@
+(() => {
+  // src/js/components/horizontal-bar-chart.js
+  (function() {
+    "use strict";
+    const chartEl = $(".horizontal-bar-chart");
+    if (chartEl.length) {
+      chartEl.each(function() {
+        const ctx = $(this)[0].getContext("2d");
+        const horizontalBarChart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug"
+            ],
+            datasets: [
+              {
+                label: "Html Template",
+                barPercentage: 0.5,
+                barThickness: 6,
+                maxBarThickness: 8,
+                minBarLength: 2,
+                data: [0, 200, 250, 200, 500, 450, 850, 1050],
+                backgroundColor: getColor("primary")
+              },
+              {
+                label: "VueJs Template",
+                barPercentage: 0.5,
+                barThickness: 6,
+                maxBarThickness: 8,
+                minBarLength: 2,
+                data: [0, 300, 400, 560, 320, 600, 720, 850],
+                backgroundColor: getColor("slate.300")
+              }
+            ]
+          },
+          options: {
+            indexAxis: "y",
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: getColor("slate.500", 0.8)
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  font: {
+                    size: 12
+                  },
+                  color: getColor("slate.500", 0.8),
+                  callback: function(value) {
+                    return "$" + value;
+                  }
+                },
+                grid: {
+                  display: false
+                },
+                border: {
+                  display: false
+                }
+              },
+              y: {
+                ticks: {
+                  font: {
+                    size: 12
+                  },
+                  color: getColor("slate.500", 0.8)
+                },
+                grid: {
+                  color: getColor("slate.300")
+                },
+                border: {
+                  display: false,
+                  dash: [2, 2]
+                }
+              }
+            }
+          }
+        });
+        helper.watchCssVariables("html", ["color-primary"], (newValues) => {
+          horizontalBarChart.data.datasets[0].backgroundColor = getColor("primary");
+          horizontalBarChart.update();
+        });
+      });
+    }
+  })();
+})();

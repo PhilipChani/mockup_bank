@@ -23,9 +23,83 @@ import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import JsonViewerHook  from "./jsonviewerHook"
 
-let Hooks = {
-  JsonViewerHook: JsonViewerHook
+
+
+
+
+(async () => {
+  const modules = await Promise.all([
+    import('../vendor/dist/js/vendors/dom.js'),
+    import('../vendor/dist/js/vendors/tailwind-merge.js'),
+    import('../vendor/dist/js/vendors/lucide.js'),
+    import('../vendor/dist/js/vendors/dayjs.js'),
+    import('../vendor/dist/js/vendors/litepicker.js'),
+    import('../vendor/dist/js/vendors/tippy.js'),
+    import('../vendor/dist/js/vendors/tab.js'),
+    import('../vendor/dist/js/vendors/popper.js'),
+    import('../vendor/dist/js/vendors/simplebar.js'),
+    import('../vendor/dist/js/vendors/chartjs.js'),
+    import('../vendor/dist/js/vendors/transition.js'),
+    import('../vendor/dist/js/vendors/modal.js'),
+    import('../vendor/dist/js/vendors/dropdown.js'),
+    import('../vendor/dist/js/components/base/theme-color.js'),
+    import('../vendor/dist/js/components/base/lucide.js'),
+    import('../vendor/dist/js/components/base/litepicker.js'),
+    import('../vendor/dist/js/components/base/tippy.js'),
+    import('../vendor/dist/js/utils/colors.js'),
+    import('../vendor/dist/js/utils/helper.js'),
+    import('../vendor/dist/js/components/report-line-chart-1.js'),
+    import('../vendor/dist/js/components/report-bar-chart-1.js'),
+    import('../vendor/dist/js/components/report-line-chart-2.js'),
+    import('../vendor/dist/js/components/report-donut-chart-1.js'),
+    import('../vendor/dist/js/themes/waveform.js'),
+    import('../vendor/dist/js/components/quick-search.js')
+  ]);
+
+  modules.forEach(module => Object.assign(window, module));
+})();
+
+// Add this function
+async function loadModules() {
+  const modules = await Promise.all([
+    import('../vendor/dist/js/vendors/dom.js'),
+    import('../vendor/dist/js/vendors/tailwind-merge.js'),
+    import('../vendor/dist/js/vendors/lucide.js'),
+    import('../vendor/dist/js/vendors/dayjs.js'),
+    import('../vendor/dist/js/vendors/litepicker.js'),
+    import('../vendor/dist/js/vendors/tippy.js'),
+    import('../vendor/dist/js/vendors/tab.js'),
+    import('../vendor/dist/js/vendors/popper.js'),
+    import('../vendor/dist/js/vendors/simplebar.js'),
+    import('../vendor/dist/js/vendors/chartjs.js'),
+    import('../vendor/dist/js/vendors/transition.js'),
+    import('../vendor/dist/js/vendors/modal.js'),
+    import('../vendor/dist/js/vendors/dropdown.js'),
+    import('../vendor/dist/js/components/base/theme-color.js'),
+    import('../vendor/dist/js/components/base/lucide.js'),
+    import('../vendor/dist/js/components/base/litepicker.js'),
+    import('../vendor/dist/js/components/base/tippy.js'),
+    import('../vendor/dist/js/utils/colors.js'),
+    import('../vendor/dist/js/utils/helper.js'),
+    import('../vendor/dist/js/components/report-line-chart-1.js'),
+    import('../vendor/dist/js/components/report-bar-chart-1.js'),
+    import('../vendor/dist/js/components/report-line-chart-2.js'),
+    import('../vendor/dist/js/components/report-donut-chart-1.js'),
+    import('../vendor/dist/js/themes/waveform.js'),
+    import('../vendor/dist/js/components/quick-search.js')
+  ]);
+
+  modules.forEach(module => Object.assign(window, module));
 }
+
+let Hooks = {
+  JsonViewerHook: JsonViewerHook,
+  InitializeModules: {
+    mounted() {
+      loadModules();
+    }
+  }
+};
 
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")

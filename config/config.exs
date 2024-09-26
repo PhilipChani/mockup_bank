@@ -65,3 +65,18 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+
+config :mockup_bank,
+  query_params: %{
+    "page" => 1,
+    "sort_field" => "inserted_at",
+    "sort_order" => "desc",
+    "search" => "",
+    "page_size" => 10,
+    "from_date" => "",
+    "to_date" => "",
+    "operator" => "",
+    "query_field" => "",
+    "query_search" => ""
+  }

@@ -1,0 +1,38 @@
+<%= if @menu.type == :link do %>
+  <li>
+    <a href={@menu.href} class="side-menu__link">
+      <i
+        data-tw-merge=""
+        data-lucide={@menu.icon}
+        class="stroke-[1] w-5 h-5 side-menu__link__icon"
+      >
+      </i>
+      <div class="side-menu__link__title"><%= @menu.title %></div>
+    </a>
+  </li>
+<% else %>
+  <li>
+    <a href="javascript:;" class="side-menu__link">
+      <i
+        data-tw-merge=""
+        data-lucide={@menu.icon}
+        class="stroke-[1] w-5 h-5 side-menu__link__icon"
+      >
+      </i>
+      <div class="side-menu__link__title"><%= @menu.title %></div>
+      
+      <i
+        data-tw-merge=""
+        data-lucide="chevron-down"
+        class="stroke-[1] w-5 h-5 side-menu__link__chevron"
+      >
+      </i>
+    </a>
+    
+    <ul class="hidden">
+      <%= for submenu <- @menu.options do %>
+        <%= Phoenix.Template.render(MockupBankWeb.Partials, "_option_menu2", "html", menu: submenu) %>
+      <% end %>
+    </ul>
+  </li>
+<% end %>

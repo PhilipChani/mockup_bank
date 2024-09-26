@@ -8,7 +8,7 @@ config :mockup_bank, MockupBank.Repo,
   database: "mockupserver",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10,
+  pool_size: 5,
   port: 5433,
   queue_target: 30000,
   queue_interval: 30000

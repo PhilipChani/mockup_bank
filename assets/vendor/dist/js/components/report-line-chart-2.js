@@ -1,0 +1,370 @@
+(() => {
+  // src/js/components/report-line-chart-2.js
+  (function() {
+    "use strict";
+    const chartEl = $(".report-line-chart-2");
+    if (chartEl.length) {
+      chartEl.each(function(key) {
+        const ctx = $(this)[0].getContext("2d");
+        const data = [
+          [
+            0,
+            3,
+            1,
+            9,
+            18,
+            20,
+            10,
+            13,
+            21,
+            29,
+            23,
+            14,
+            16,
+            9,
+            11,
+            16,
+            7,
+            10,
+            15,
+            23,
+            30,
+            28,
+            33,
+            36,
+            30,
+            26,
+            35,
+            32,
+            26,
+            35,
+            27,
+            31,
+            39,
+            41,
+            43,
+            51,
+            45,
+            49,
+            58,
+            63,
+            54,
+            56,
+            53,
+            50,
+            42,
+            45,
+            48,
+            58,
+            54,
+            59,
+            63,
+            55,
+            51,
+            42,
+            40,
+            48,
+            58,
+            56,
+            54,
+            48,
+            56,
+            62,
+            57,
+            65,
+            55,
+            47,
+            57,
+            67,
+            75,
+            68
+          ],
+          [
+            0,
+            3,
+            9,
+            11,
+            19,
+            25,
+            15,
+            8,
+            14,
+            16,
+            20,
+            16,
+            10,
+            4,
+            10,
+            16,
+            20,
+            26,
+            28,
+            21,
+            18,
+            28,
+            37,
+            34,
+            32,
+            34,
+            24,
+            32,
+            41,
+            37,
+            40,
+            42,
+            40,
+            35,
+            45,
+            37,
+            34,
+            42,
+            34,
+            28,
+            30,
+            22,
+            16,
+            21,
+            24,
+            28,
+            30,
+            40,
+            47,
+            54,
+            61,
+            69,
+            62,
+            59,
+            51,
+            49,
+            55,
+            51,
+            41,
+            33,
+            37,
+            44,
+            53,
+            49,
+            56,
+            58,
+            48,
+            40,
+            34,
+            38
+          ],
+          [
+            0,
+            7,
+            3,
+            2,
+            4,
+            14,
+            8,
+            10,
+            16,
+            14,
+            18,
+            23,
+            20,
+            13,
+            9,
+            13,
+            10,
+            8,
+            3,
+            3,
+            6,
+            4,
+            6,
+            4,
+            1,
+            2,
+            11,
+            17,
+            23,
+            19,
+            17,
+            23,
+            27,
+            17,
+            20,
+            24,
+            22,
+            16,
+            23,
+            32,
+            22,
+            28,
+            35,
+            37,
+            29,
+            21,
+            18,
+            24,
+            18,
+            24,
+            21,
+            18,
+            14,
+            17,
+            15,
+            7,
+            16,
+            6,
+            13,
+            15,
+            24,
+            30,
+            33,
+            42,
+            48,
+            38,
+            32,
+            27,
+            34,
+            30
+          ],
+          [
+            0,
+            3,
+            1,
+            9,
+            18,
+            20,
+            10,
+            13,
+            21,
+            29,
+            23,
+            14,
+            16,
+            9,
+            11,
+            16,
+            7,
+            10,
+            15,
+            23,
+            30,
+            28,
+            33,
+            36,
+            30,
+            26,
+            35,
+            32,
+            26,
+            35,
+            27,
+            31,
+            39,
+            41,
+            43,
+            51,
+            45,
+            49,
+            58,
+            63,
+            54,
+            56,
+            53,
+            50,
+            42,
+            45,
+            48,
+            58,
+            54,
+            59,
+            63,
+            55,
+            51,
+            42,
+            40,
+            48,
+            58,
+            56,
+            54,
+            48,
+            56,
+            62,
+            57,
+            65,
+            55,
+            47,
+            57,
+            67,
+            75,
+            68
+          ]
+        ];
+        const getBackground = () => {
+          const canvas = document.createElement("canvas");
+          const ctx2 = canvas.getContext("2d");
+          const gradient = ctx2?.createLinearGradient(0, 4, 0, 45);
+          gradient?.addColorStop(0, getColor("primary", 0.3));
+          gradient?.addColorStop(
+            1,
+            $("html").hasClass("dark") ? "#28344e00" : "#ffffff01"
+          );
+          return gradient;
+        };
+        const reportLineChart2 = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: data[key],
+            datasets: [
+              {
+                data: data[key],
+                borderWidth: 0.8,
+                borderColor: getColor("primary", 0.6),
+                pointRadius: 0,
+                backgroundColor: getBackground(),
+                tension: 0,
+                fill: true
+              }
+            ]
+          },
+          options: {
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  display: false
+                },
+                grid: {
+                  display: false
+                },
+                border: {
+                  display: false
+                }
+              },
+              y: {
+                ticks: {
+                  display: false
+                },
+                grid: {
+                  display: false
+                },
+                border: {
+                  display: false
+                }
+              }
+            }
+          }
+        });
+        helper.watchCssVariables("html", ["color-primary"], (newValues) => {
+          reportLineChart2.data.datasets[0].borderColor = getColor(
+            "primary",
+            0.6
+          );
+          reportLineChart2.data.datasets[0].backgroundColor = getBackground();
+          reportLineChart2.update();
+        });
+      });
+    }
+  })();
+})();
