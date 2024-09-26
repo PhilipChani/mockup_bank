@@ -10,6 +10,7 @@ defmodule MockupBank.Database.UserAccounts do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:account_number, :balance, :currency, :account_type, :status, :last_transaction_date]}
   schema "user_accounts" do
     field :account_number, :string
     field :balance, :decimal
