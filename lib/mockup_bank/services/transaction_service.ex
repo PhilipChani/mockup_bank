@@ -216,9 +216,13 @@ defmodule MockupBank.Service.TransactionService do
   defp determine_transaction_type(_from_account, _to_account), do: "transfer"
 
   # Private function to generate a unique account number
-  defp generate_account_number do
-    # Generate a unique account number using random bytes
-    "ACCT" <> (:crypto.strong_rand_bytes(8) |> Base.encode16())
+  def generate_account_number do
+    # Generate a unique account number using timestamp, date and 12 random numbers
+
+    number = :rand.uniform(999999)
+    |> Integer.to_string()
+
+    "1850000#{String.slice(number, 0, 6)}"
   end
 
   # Private function to generate a unique transaction reference
