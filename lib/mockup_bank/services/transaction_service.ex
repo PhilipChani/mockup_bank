@@ -22,7 +22,7 @@ defmodule MockupBank.Service.TransactionService do
         # Rollback the transaction if any operation fails
         {:error, changeset} -> Repo.rollback(changeset)
       end
-    end) |> IO.inspect
+    end)
   end
 
   # Function to credit an account
@@ -146,7 +146,7 @@ defmodule MockupBank.Service.TransactionService do
     # Create a new UserAccounts struct and insert it into the database
     %UserAccounts{}
     |> UserAccounts.changeset(%{
-      account_number: generate_account_number(),
+      account_number: if(account_type == "wallet", do: generate_wallet_number(), else: generate_account_number()),
       balance: initial_balance,
       currency: currency,
       account_type: account_type,
@@ -224,6 +224,15 @@ defmodule MockupBank.Service.TransactionService do
     |> Integer.to_string()
 
     "1850000#{String.slice(number, 0, 6)}"
+  end
+
+  def generate_wallet_number do
+    # Generate a unique account number using timestamp, date and 12 random numbers
+
+    number = :rand.uniform(999999)
+    |> Integer.to_string()
+
+    "2659999#{String.slice(number, 0, 5)}"
   end
 
   # Private function to generate a unique transaction reference
