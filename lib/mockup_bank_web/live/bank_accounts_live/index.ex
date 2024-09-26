@@ -89,6 +89,9 @@ defmodule MockupBankWeb.BankAccountsLive.Index do
        |> assign(:filter_params, params)
        |> push_navigate(to: "#{@url}#{endpoint}", replace: true)}
     end
+
+
+
     
   end
   

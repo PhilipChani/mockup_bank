@@ -9,7 +9,10 @@
     selected_column={@selected_column}
   rows={@streams.transactions}
 >
-  <:col :let={{_id, transaction}} filter_item="name" label="Account Number"><%= transaction.name %></:col>
+  <:col :let={{_id, transaction}} filter_item="id" label="ID"><%= transaction.id %></:col>
+  <:col :let={{_id, transaction}} filter_item="email" label="Email"><%= transaction.email %></:col>
+  <:col :let={{_id, transaction}} filter_item="first_name" label="First Name"><%= transaction.first_name %></:col>
+  <:col :let={{_id, transaction}} filter_item="last_name" label="Last Name"><%= transaction.last_name %></:col>
   <:col :let={{_id, transaction}} filter_item="phone" label="Phone Number"><%= transaction.phone %></:col>
   <:col :let={{_id, transaction}} filter_item="identifier_type" label="Identifier Type"><%= transaction.identifier_type %></:col>
   <:col :let={{_id, transaction}} filter_item="identifier_number" label="Indentifier Number"><%= transaction.identifier_number %></:col>
