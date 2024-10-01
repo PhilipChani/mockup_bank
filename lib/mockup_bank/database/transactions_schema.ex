@@ -2,6 +2,7 @@ defmodule MockupBank.Database.Transaction do
   use Ecto.Schema  # Use the Ecto.Schema module to define the schema for the Transaction model
   import Ecto.Changeset  # Import the Ecto.Changeset module to handle changesets
 
+  @derive {Jason.Encoder, only: [:type, :amount, :credit_amount, :debit_amount, :description, :status, :reference, :value_date, :opening_balance, :closing_balance]}
   schema "transactions" do  # Define the schema for the "transactions" table
     field :type, :string  # Define a string field for the type of transaction (e.g., credit, debit, transfer)
     field :amount, :decimal  # Define a decimal field for the transaction amount
