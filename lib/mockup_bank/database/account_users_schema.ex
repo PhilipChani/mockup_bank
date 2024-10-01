@@ -10,7 +10,27 @@ defmodule MockupBank.Database.AccountUsers do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [:email, :name, :first_name, :last_name, :phone, :date_of_birth, :address, :city, :state, :zip, :country, :user_accounts, :region, :postal_code, :identifier_type, :identifier_number, :currency, :role]}
+  @derive {Jason.Encoder,
+           only: [
+             :email,
+             :name,
+             :first_name,
+             :last_name,
+             :phone,
+             :date_of_birth,
+             :address,
+             :city,
+             :state,
+             :zip,
+             :country,
+             :user_accounts,
+             :region,
+             :postal_code,
+             :identifier_type,
+             :identifier_number,
+             :currency,
+             :role
+           ]}
   schema "account_users" do
     field :email, :string
     field :name, :string
@@ -29,6 +49,11 @@ defmodule MockupBank.Database.AccountUsers do
     field :identifier_number, :string
     field :currency, :string
     field :role, :string
+
+    field :notify_sms, :boolean, default: true
+    field :notify_email, :boolean, default: true
+    field :push_notifications, :boolean, default: true
+
     has_many :user_accounts, MockupBank.Database.UserAccounts
 
     timestamps()
@@ -36,9 +61,26 @@ defmodule MockupBank.Database.AccountUsers do
 
   def changeset(account_user, attrs) do
     account_user
-    |> cast(attrs, [:email, :name, :first_name, :last_name, :phone, :date_of_birth, :address, :city, :state, :zip, :country, :region, :postal_code, :identifier_type, :identifier_number, :currency, :role])
+    |> cast(attrs, [
+      :email,
+      :name,
+      :first_name,
+      :last_name,
+      :phone,
+      :date_of_birth,
+      :address,
+      :city,
+      :state,
+      :zip,
+      :country,
+      :region,
+      :postal_code,
+      :identifier_type,
+      :identifier_number,
+      :currency,
+      :role
+    ])
     |> validate_required([:email])
     |> unique_constraint(:email)
   end
-
 end
