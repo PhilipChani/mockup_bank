@@ -32,7 +32,7 @@ defmodule MockupBankWeb.BankController do
 
   def transfer_funds(conn, %{"from_account" => from_account, "to_account" => to_account, "amount" => amount} = params) do
     description = Map.get(params, "description", "Transfer")
-    with {:ok, updated_from_account, updated_to_account, transaction} <- AccountTransactionService.transfer_funds(from_account, to_account, amount, description) do
+    with {:ok, {updated_from_account, updated_to_account, transaction}} <- AccountTransactionService.transfer_funds(from_account, to_account, amount, description) do
       conn
       |> put_status(:ok)
       |> render("transfer_with_transaction.json", from: updated_from_account, to: updated_to_account, transaction: transaction)
@@ -52,6 +52,7 @@ defmodule MockupBankWeb.BankController do
     end
   end
 
+  @spec get_transactions(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def get_transactions(conn, %{"account_number" => account_number}) do
     transactions = AccountTransactionService.get_account_transactions(account_number)
     render(conn, "transactions.json", transactions: transactions)
@@ -84,6 +85,19 @@ defmodule MockupBankWeb.BankController do
         conn
         |> put_status(:ok)
         |> render("by_account_number.json", account: account)
+    end
+  end
+
+  def nickname(conn, %{"account_number" => account_number, "nickname" => nickname}) do
+    case AccountTransactionService.set_nickname(account_number, nickname) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> json(%{error: "Account not found"})
+      account ->
+        conn
+        |> put_status(:ok)
+        |> render("account.json", account: account)
     end
   end
 
