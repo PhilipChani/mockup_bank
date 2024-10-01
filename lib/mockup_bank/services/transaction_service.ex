@@ -5,6 +5,7 @@ defmodule MockupBank.Service.TransactionService do
   import Ecto.Query
 
   # Function to create a new account
+  @spec create_account(any()) :: any()
   def create_account(params) do
 
     params = Enum.into(params, %{}, fn {k, v} -> {String.to_atom(k), v} end)
@@ -77,6 +78,7 @@ defmodule MockupBank.Service.TransactionService do
   end
 
   # Function to transfer funds between accounts
+  @spec transfer_funds(any(), any(), any(), any()) :: any()
   def transfer_funds(from_account_number, to_account_number, amount, description \\ "Transfer") do
     # Start a database transaction
     Repo.transaction(fn ->
@@ -255,6 +257,25 @@ defmodule MockupBank.Service.TransactionService do
       "credit" -> Decimal.add(account.balance, amount)
       "debit" -> Decimal.sub(account.balance, amount)
       "transfer" -> account.balance
+    end
+  end
+
+  # Function to update the nickname for an account
+  def set_nickname(account_number, new_nickname) do
+    # Retrieve the account using its number
+    account = get_account_by_number(account_number)
+
+    # If the account is found, proceed to update the nickname
+    if account do
+      updated_account = account
+      |> UserAccounts.changeset(%{nickname: new_nickname})
+      |> Repo.update()
+
+      {:ok, updated_account} = updated_account
+      updated_account
+    else
+      # If the account is not found, return an error
+      nil
     end
   end
 end
