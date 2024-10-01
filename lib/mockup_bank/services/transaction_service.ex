@@ -79,6 +79,7 @@ defmodule MockupBank.Service.TransactionService do
 
   # Function to transfer funds between accounts
   @spec transfer_funds(any(), any(), any(), any()) :: any()
+  @spec transfer_funds(any(), any(), any()) :: any()
   def transfer_funds(from_account_number, to_account_number, amount, description \\ "Transfer") do
     # Start a database transaction
     Repo.transaction(fn ->
