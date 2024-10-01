@@ -70,6 +70,7 @@ defmodule MockupBankWeb.Router do
     post "/accounts/transactions", BankController, :get_transactions
     post "/accounts/balance", BankController, :get_balance
     post "/accounts/account_lookup", BankController, :get_account
+    post "/accounts/nickname", BankController, :nickname
   end
 
   # Other scopes may use custom stacks.
