@@ -1,13 +1,7 @@
 defmodule MockupBankWeb.BankJSON do
 
   def account(%{account: account}) do
-    %{
-      account_number: account.account_number,
-      balance: Decimal.to_string(account.balance, :normal),
-      currency: account.currency,
-      account_type: account.account_type,
-      status: account.status
-    }
+    account
   end
 
   def by_account_number(%{account: account}) do
@@ -86,14 +80,7 @@ defmodule MockupBankWeb.BankJSON do
     %{
       from_account: account(%{account: from}),
       to_account: account(%{account: to}),
-      transaction: %{
-        id: transaction.id,
-        type: transaction.type,
-        amount: Decimal.to_string(transaction.amount, :normal),
-        description: transaction.description,
-        status: transaction.status,
-        inserted_at: transaction.inserted_at
-      }
+      transaction: transaction
     }
   end
 
