@@ -205,8 +205,8 @@ defmodule MockupBank.Service.TransactionService do
       reference: generate_reference(),
       value_date: Date.utc_today(),
       opening_balance: get_opening_balance(from_account || to_account),
-      closing_balance: get_closing_balance(from_account || to_account, amount, transaction_type)
-    }
+      closing_balance: get_closing_balance(to_account || from_account, amount, transaction_type)
+    } |> IO.inspect(label: "Transaction Attributes")
 
     # Create a new Transaction struct and insert it into the database
     %Transaction{}
