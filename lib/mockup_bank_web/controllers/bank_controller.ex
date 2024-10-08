@@ -30,6 +30,7 @@ defmodule MockupBankWeb.BankController do
     end
   end
 
+  @spec transfer_funds(any(), map()) :: any()
   def transfer_funds(conn, %{"from_account" => from_account, "to_account" => to_account, "amount" => amount} = params) do
     description = Map.get(params, "description", "Transfer")
     with {:ok, {updated_from_account, updated_to_account, transaction}} <- AccountTransactionService.transfer_funds(from_account, to_account, amount, description) do
