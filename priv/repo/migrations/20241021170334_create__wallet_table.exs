@@ -5,7 +5,7 @@ defmodule MockupBank.Repo.Migrations.Create_WalletTable do
     create table(:wallet_accounts) do
       add :nickname, :string
       add :account_number, :string, null: false
-      add :customer_number, :string, null: false
+      add :customer_number, :string
       add :balance, :decimal, null: false, precision: 10, scale: 2
       add :currency, :string, null: false
       add :account_type, :string, null: false
@@ -32,7 +32,6 @@ defmodule MockupBank.Repo.Migrations.Create_WalletTable do
     end
 
     create unique_index(:wallet_accounts, [:account_number])
-    create unique_index(:wallet_accounts, [:customer_number])
     create index(:wallet_accounts, [:account_users_id])
   end
 end

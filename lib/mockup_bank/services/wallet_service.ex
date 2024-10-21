@@ -137,7 +137,7 @@ defmodule MockupBank.Service.WalletService do
   # Private function to find or create an account user
   defp find_or_create_account_user(email, name, params \\ %{}) do
     # Attempt to get the account user by email
-    case Repo.get_by(AccountUsers, email: email, phone: params.mobile_number) do
+    case Repo.get_by(AccountUsers, email: email, phone: params.mobile_number) |> IO.inspect do
       # If the account user does not exist, create a new account user
       nil -> create_account_user(email, name, params)
       # If the account user exists, return it
