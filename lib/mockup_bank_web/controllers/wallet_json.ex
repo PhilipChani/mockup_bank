@@ -1,5 +1,6 @@
 defmodule MockupBankWeb.WalletJSON do
 
+
   def account(%{account: account}) do
     account
   end
@@ -89,7 +90,7 @@ defmodule MockupBankWeb.WalletJSON do
       id: account_user.id,
       email: account_user.email,
       name: account_user.name,
-      accounts: Enum.map(account_user.user_accounts, &account(%{account: &1}))
+      wallets: Enum.map(account_user.wallet_accounts, &account(%{account: &1}))
     }
   end
 

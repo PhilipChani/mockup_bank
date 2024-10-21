@@ -9,6 +9,7 @@ defmodule MockupBank.Database.UserAccounts do
 
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   @derive {Jason.Encoder, only: [:nickname, :account_number, :balance, :currency, :account_type, :status, :last_transaction_date, :hidden, :frozen, :enable_alerts, :low_balance_alert, :low_balance_threshold, :large_transaction_alert, :large_transaction_threshold, :suspicous_activity_alert, :suspicous_activity_seconds_between_transactions]}
   schema "user_accounts" do
@@ -45,6 +46,54 @@ defmodule MockupBank.Database.UserAccounts do
     |> cast(attrs, [:nickname, :account_users_id, :account_number, :balance, :currency, :account_type, :status, :last_transaction_date])
     |> validate_required([:account_number, :balance, :currency, :account_type, :status])
     |> unique_constraint(:account_number)
+  end
+
+  @doc """
+  Updates the nickname of a user account.
+
+  ## Parameters
+
+    - account_number: The account number of the user account to update.
+    - new_nickname: The new nickname to set for the account.
+
+  ## Returns
+
+    - {:ok, updated_account} if the update was successful.
+    - {:error, changeset} if there was an error updating the account.
+  """
+  def update_nickname(account_number, new_nickname) do
+    case MockupBank.Repo.get_by(__MODULE__, account_number: account_number) do
+      nil ->
+        {:error, :account_not_found}
+      account ->
+        account
+        |> changeset(%{nickname: new_nickname})
+        |> MockupBank.Repo.update()
+    end
+  end
+
+  @doc """
+  Sets the nickname of a user account.
+
+  ## Parameters
+
+    - account_number: The account number of the user account to update.
+    - nickname: The nickname to set for the account.
+
+  ## Returns
+
+    - {:ok, updated_account} if setting the nickname was successful.
+    - {:error, changeset} if there was an error setting the nickname.
+  """
+  def set_nickname(account_number, nickname) do
+    case MockupBank.Repo.get_by(__MODULE__, account_number: account_number) do
+      nil ->
+        {:error, :account_not_found}
+      account ->
+        account
+        |> changeset(%{nickname: nickname})
+        |> MockupBank.Repo.update()
+    end
   end
 
 end

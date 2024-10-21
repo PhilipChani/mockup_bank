@@ -40,8 +40,8 @@ defmodule MockupBankWeb.WalletController do
     end
   end
 
-  def lookup_accounts(conn, %{"email" => email}) do
-    case AccountTransactionService.lookup_accounts_by_email(email) |> IO.inspect do
+  def lookup_accounts_by_mobile(conn, %{"mobile_number" => mobile_number}) do
+    case AccountTransactionService.lookup_accounts_by_phone(mobile_number) |> IO.inspect do
       nil ->
         conn
         |> put_status(:not_found)

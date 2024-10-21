@@ -55,6 +55,7 @@ defmodule MockupBank.Database.AccountUsers do
     field :push_notifications, :boolean, default: true
 
     has_many :user_accounts, MockupBank.Database.UserAccounts
+    has_many :wallet_accounts, MockupBank.Database.WalletAccounts
 
     timestamps()
   end

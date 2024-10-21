@@ -78,6 +78,15 @@ defmodule MockupBank.Service.WalletService do
     |> Repo.one()
   end
 
+  # Function to lookup accounts by email
+  def lookup_accounts_by_phone(phone_number) do
+    # Query the AccountUsers table to find accounts by email and preload associated user accounts
+    AccountUsers
+    |> where([au], au.phone == ^phone_number)
+    |> preload(:wallet_accounts)
+    |> Repo.one()
+  end
+
   # Function to transfer funds between accounts
   @spec transfer_funds(any(), any(), any(), any()) :: any()
   @spec transfer_funds(any(), any(), any()) :: any()
@@ -128,7 +137,7 @@ defmodule MockupBank.Service.WalletService do
   # Private function to find or create an account user
   defp find_or_create_account_user(email, name, params \\ %{}) do
     # Attempt to get the account user by email
-    case Repo.get_by(AccountUsers, email: email) do
+    case Repo.get_by(AccountUsers, email: email, phone: params.mobile_number) do
       # If the account user does not exist, create a new account user
       nil -> create_account_user(email, name, params)
       # If the account user exists, return it
@@ -154,7 +163,7 @@ defmodule MockupBank.Service.WalletService do
       customer_number: customer_number,
       balance: initial_balance,
       currency: currency,
-      account_type: account_type,
+      account_type: "WALLET",
       status: "active",
       account_users_id: account_user.id
     })

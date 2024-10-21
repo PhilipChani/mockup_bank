@@ -73,6 +73,20 @@ defmodule MockupBankWeb.Router do
     post "/accounts/nickname", BankController, :nickname
   end
 
+  scope "/api/wallet", MockupBankWeb do
+    pipe_through :api
+
+    post "/accounts", WalletController, :create_account
+    post "/accounts/credit", WalletController, :credit_account
+    post "/accounts/debit", WalletController, :debit_account
+    post "/accounts/transfer", WalletController, :transfer_funds
+    post "/accounts/lookup", WalletController, :lookup_accounts_by_mobile
+    post "/accounts/transactions", WalletController, :get_transactions
+    post "/accounts/balance", WalletController, :get_balance
+    post "/accounts/account_lookup", WalletController, :get_account
+    post "/accounts/nickname", WalletController, :nickname
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", MockupBankWeb do
   #   pipe_through :api
